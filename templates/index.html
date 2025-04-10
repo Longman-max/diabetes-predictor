@@ -9,42 +9,66 @@
   <body>
     <header>
       <div>
-        <h1>Precious Kings</h1>
-        <h2>About</h2>
+        <h1><span class="first-name">Precious</span><span class="second-name" > Kings</span></h1>
+      </div>
+      <div>
+        <a href="#">About</a>
       </div>
     </header>
-    <h1>Diabetes Prediction</h1>
-    <form action="/predict" method="post">
-      <label for="Pregnancies">Pregnancies:</label>
-      <input type="number" name="Pregnancies" required /><br />
+    <h1>Diabetes Predictor</h1>
+    <div class="form-container">
+      <form action="/predict" method="post">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="Pregnancies">Pregnancies:</label>
+            <input type="number" name="Pregnancies" required /><br />
+          </div>
 
-      <label for="Glucose">Glucose:</label>
-      <input type="number" name="Glucose" required /><br />
+          <div class="form-group">
+            <label for="Glucose">Glucose:</label>
+            <input type="number" name="Glucose" required /><br />
+          </div>
 
-      <label for="BloodPressure">Blood Pressure:</label>
-      <input type="number" name="BloodPressure" required /><br />
+          <div class="form-group">
+            <label for="BloodPressure">Blood Pressure:</label>
+            <input type="number" name="BloodPressure" required /><br />
+          </div>
 
-      <label for="SkinThickness">Skin Thickness:</label>
-      <input type="number" name="SkinThickness" required /><br />
+          <div class="form-group">
+            <label for="SkinThickness">Skin Thickness:</label>
+            <input type="number" name="SkinThickness" required /><br />
+          </div>
 
-      <label for="Insulin">Insulin:</label>
-      <input type="number" name="Insulin" required /><br />
+          <div class="form-group">
+            <label for="Insulin">Insulin:</label>
+            <input type="number" name="Insulin" required /><br />
+          </div>
 
-      <label for="BMI">BMI:</label>
-      <input type="number" step="0.1" name="BMI" required /><br />
+          <div class="form-group">
+            <label for="BMI">BMI:</label>
+            <input type="number" step="0.1" name="BMI" required /><br />
+          </div>
 
-      <label for="DiabetesPedigreeFunction">Diabetes Pedigree Function:</label>
-      <input
-        type="number"
-        step="0.01"
-        name="DiabetesPedigreeFunction"
-        required
-      /><br />
+          <div class="form-group">
+            <label for="DiabetesPedigreeFunction"
+              >Diabetes Pedigree Function:</label
+            >
+            <input
+              type="number"
+              step="0.01"
+              name="DiabetesPedigreeFunction"
+              required
+            /><br />
+          </div>
 
-      <label for="Age">Age:</label>
-      <input type="number" name="Age" required /><br />
+          <div class="form-group">
+            <label for="Age">Age:</label>
+            <input type="number" name="Age" required /><br />
+          </div>
+        </div>
 
-      <button type="submit">Predict</button>
-    </form>
+        <button type="submit">Predict</button>
+      </form>
+    </div>
   </body>
 </html>
