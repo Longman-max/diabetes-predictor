@@ -37,7 +37,7 @@ def predict():
     prediction = model.predict(features_scaled)
     result = 'Diabetic' if prediction[0] == 1 else 'Not Diabetic'
 
-    return render_template('result.html', result=result)
+    return render_template('index.html', result=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
