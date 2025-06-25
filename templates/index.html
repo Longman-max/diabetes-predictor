@@ -79,27 +79,36 @@
       <div class="prediction-box">
         <h3>Prediction Result</h3>
         {% if result %}
-        <p class="status">Prediction complete</p>
+        <p class="status" id="status-text">Prediction complete</p>
         <div class="progress-bar">
-          <span style="width: 100%"></span>
+          <span id="progress-bar-span" style="width: 100%"></span>
         </div>
-        <p class="result-text final">{{ result }}</p>
-        {% elif submitted %}
-        <p class="status">Awaiting result...</p>
-        <div class="progress-bar">
-          <span
-            style="width: 30%; animation: pulse 1s infinite alternate"
-          ></span>
-        </div>
-        <p class="result-text">Please wait while we process your data.</p>
+        <p class="result-text final" id="result-text">{{ result }}</p>
+        <button type="button" id="clear-result-btn">Clear Result</button>
         {% else %}
-        <p class="status">Awaiting input...</p>
+        <p class="status" id="status-text">Awaiting result...</p>
         <div class="progress-bar">
-          <span style="width: 0%"></span>
+          <span id="progress-bar-span" style="width: 0%"></span>
         </div>
-        <p class="result-text">No prediction yet</p>
+        <p class="result-text" id="result-text">No prediction yet</p>
+        <button type="button" id="clear-result-btn">Clear Result</button>
         {% endif %}
       </div>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var clearBtn = document.getElementById("clear-result-btn");
+        if (clearBtn) {
+          clearBtn.addEventListener("click", function () {
+            document.getElementById("status-text").textContent =
+              "Awaiting result...";
+            document.getElementById("progress-bar-span").style.width = "0%";
+            document.getElementById("progress-bar-span").style.animation = "";
+            document.getElementById("result-text").textContent =
+              "No prediction yet";
+          });
+        }
+      });
+    </script>
   </body>
 </html>

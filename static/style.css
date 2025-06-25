@@ -91,6 +91,11 @@ button:hover {
   background-color: #333;
 }
 
+button#clear-result-btn {
+  background-color: black;
+  color: white;
+}
+
 /* Prediction Box */
 .prediction-box {
   background-color: #fff;
