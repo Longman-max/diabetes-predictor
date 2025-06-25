@@ -8,51 +8,50 @@ body {
   font-family: "Segoe UI", sans-serif;
   background-color: #f2f4f8;
   padding: 20px;
+  color: #333;
 }
 
 header {
   display: flex;
   justify-content: space-between;
-  color: white;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 header h1 {
-  margin-bottom: 5px;
+  font-size: 24px;
 }
 
-header h2 {
-  /* font-weight: 400; */
-  font-size: 18px;
-  color: #333;
-}
 header a {
-  /* font-weight: bold; */
-  font-size: 20px;
+  font-size: 16px;
   text-decoration: none;
-  color: black;
+  color: #111;
 }
 
 h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
   text-align: center;
-  margin-bottom: 25px;
-  color: #333;
 }
 
-.form-container {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: white;
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Form */
+.form-box {
+  background-color: #fff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
@@ -62,56 +61,100 @@ h1 {
 }
 
 label {
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 6px;
-  color: #444;
 }
 
 input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 14px;
+  width: 100%;
 }
 
 button {
-  margin-top: 30px;
+  margin-top: 20px;
   width: 100%;
-  padding: 14px;
-  font-size: 18px;
-  background-color: #007bff;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #111;
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #333;
 }
 
-.result {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.about-container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 30px;
+/* Prediction Box */
+.prediction-box {
   background-color: #fff;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.about-container h2 {
-  color: #333;
-  margin-bottom: 20px;
+.prediction-box h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #222;
 }
 
-.about-container p {
+.status {
+  font-size: 14px;
   color: #555;
-  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background-color: #111;
+  transition: width 0.3s ease;
+}
+
+.result-text {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+}
+
+.result-text.final {
+  font-size: 18px;
+  color: #222;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  from {
+    width: 10%;
+  }
+  to {
+    width: 60%;
+  }
+}
+
+@media (max-width: 768px) {
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .form-box,
+  .prediction-box {
+    width: 100%;
+  }
 }
