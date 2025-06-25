@@ -6,7 +6,9 @@
 
 body {
   font-family: "Segoe UI", sans-serif;
-  background-color: #f2f4f8;
+  /* background-color: #f2f4f8; */
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+
   padding: 20px;
   color: #333;
 }
@@ -43,7 +45,7 @@ h1 {
 
 /* Form */
 .form-box {
-  background-color: #fff;
+  background-color: #ffffff50;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
