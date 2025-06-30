@@ -32,50 +32,132 @@
         <form action="/predict" method="post">
           <div class="form-grid">
             <div class="form-group">
-              <label for="Pregnancies">Pregnancies:</label>
-              <input type="number" name="Pregnancies" required />
+              <label for="Age">Age:</label>
+              <input type="number" name="Age" required />
             </div>
-
-            <div class="form-group">
-              <label for="Glucose">Glucose:</label>
-              <input type="number" name="Glucose" required />
-            </div>
-
-            <div class="form-group">
-              <label for="BloodPressure">Blood Pressure:</label>
-              <input type="number" name="BloodPressure" required />
-            </div>
-
-            <div class="form-group">
-              <label for="SkinThickness">Skin Thickness:</label>
-              <input type="number" name="SkinThickness" required />
-            </div>
-
-            <div class="form-group">
-              <label for="Insulin">Insulin:</label>
-              <input type="number" name="Insulin" required />
-            </div>
-
             <div class="form-group">
               <label for="BMI">BMI:</label>
               <input type="number" step="0.1" name="BMI" required />
             </div>
-
             <div class="form-group">
-              <label for="DiabetesPedigreeFunction"
-                >Diabetes Pedigree Function:</label
-              >
+              <label for="Blood Glucose">Blood Glucose:</label>
+              <input type="number" name="Blood Glucose" required />
+            </div>
+            <div class="form-group">
+              <label for="Blood Pressure">Blood Pressure:</label>
+              <input type="number" name="Blood Pressure" required />
+            </div>
+            <div class="form-group">
+              <label for="HbA1c">HbA1c:</label>
+              <input type="number" step="0.1" name="HbA1c" required />
+            </div>
+            <div class="form-group">
+              <label for="Insulin Level">Insulin Level:</label>
+              <input type="number" name="Insulin Level" required />
+            </div>
+            <div class="form-group">
+              <label for="Skin thickness">Skin thickness:</label>
+              <input type="number" name="Skin thickness" required />
+            </div>
+            <div class="form-group">
+              <label for="Pregnancies">Pregnancies:</label>
               <input
                 type="number"
-                step="0.01"
-                name="DiabetesPedigreeFunction"
+                name="Pregnancies"
+                id="Pregnancies"
+                min="0"
+                max="17"
                 required
               />
+              <span class="error-message" id="error-Pregnancies"></span>
             </div>
-
             <div class="form-group">
-              <label for="Age">Age:</label>
-              <input type="number" name="Age" required />
+              <label for="Family history">Family History:</label>
+              <select name="Family history" id="Family-history" required>
+                <option value="">Select</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <span class="error-message" id="error-Family-history"></span>
+            </div>
+            <div class="form-group">
+              <label for="Physical Activity">Physical Activity:</label>
+              <select name="Physical Activity" id="Physical-Activity" required>
+                <option value="">Select</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+              <span class="error-message" id="error-Physical-Activity"></span>
+            </div>
+            <div class="form-group">
+              <label for="Smoking status">Smoking Status:</label>
+              <select name="Smoking status" id="Smoking-status" required>
+                <option value="">Select</option>
+                <option value="Smoker">Smoker</option>
+                <option value="Non-Smoker">Non-Smoker</option>
+              </select>
+              <span class="error-message" id="error-Smoking-status"></span>
+            </div>
+            <div class="form-group">
+              <label for="Alcohol Intake">Alcohol Intake (drinks/week):</label>
+              <input
+                type="number"
+                name="Alcohol Intake"
+                id="Alcohol-Intake"
+                min="0"
+                max="30"
+                required
+              />
+              <span class="error-message" id="error-Alcohol-Intake"></span>
+            </div>
+            <div class="form-group">
+              <label for="Diet Qualtiy">Diet Quality (servings/day):</label>
+              <input
+                type="number"
+                name="Diet Qualtiy"
+                id="Diet-Qualtiy"
+                min="0"
+                max="10"
+                required
+              />
+              <span class="error-message" id="error-Diet-Qualtiy"></span>
+            </div>
+            <div class="form-group">
+              <label for="Cholesterol">Cholesterol (mg/dL):</label>
+              <input
+                type="number"
+                name="Cholesterol"
+                id="Cholesterol"
+                min="100"
+                max="400"
+                required
+              />
+              <span class="error-message" id="error-Cholesterol"></span>
+            </div>
+            <div class="form-group">
+              <label for="Triglycerides">Triglycerides (mg/dL):</label>
+              <input
+                type="number"
+                name="Triglycerides"
+                id="Triglycerides"
+                min="50"
+                max="500"
+                required
+              />
+              <span class="error-message" id="error-Triglycerides"></span>
+            </div>
+            <div class="form-group">
+              <label for="Waiste ratio">Waist Circumference (cm):</label>
+              <input
+                type="number"
+                name="Waiste ratio"
+                id="Waiste-ratio"
+                min="60"
+                max="150"
+                required
+              />
+              <span class="error-message" id="error-Waiste-ratio"></span>
             </div>
           </div>
 
@@ -116,6 +198,93 @@
               "No prediction yet";
           });
         }
+      });
+      // Validation logic
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function (e) {
+        let valid = true;
+        // Pregnancies
+        const preg = document.getElementById("Pregnancies");
+        if (preg.value === "" || preg.value < 0 || preg.value > 17) {
+          document.getElementById("error-Pregnancies").textContent =
+            "Enter 0–17";
+          valid = false;
+        } else {
+          document.getElementById("error-Pregnancies").textContent = "";
+        }
+        // Family History
+        const fam = document.getElementById("Family-history");
+        if (fam.value === "") {
+          document.getElementById("error-Family-history").textContent =
+            "Select Yes or No";
+          valid = false;
+        } else {
+          document.getElementById("error-Family-history").textContent = "";
+        }
+        // Physical Activity
+        const pa = document.getElementById("Physical-Activity");
+        if (pa.value === "") {
+          document.getElementById("error-Physical-Activity").textContent =
+            "Select activity";
+          valid = false;
+        } else {
+          document.getElementById("error-Physical-Activity").textContent = "";
+        }
+        // Smoking Status
+        const smoke = document.getElementById("Smoking-status");
+        if (smoke.value === "") {
+          document.getElementById("error-Smoking-status").textContent =
+            "Select status";
+          valid = false;
+        } else {
+          document.getElementById("error-Smoking-status").textContent = "";
+        }
+        // Alcohol Intake
+        const alcohol = document.getElementById("Alcohol-Intake");
+        if (alcohol.value === "" || alcohol.value < 0 || alcohol.value > 30) {
+          document.getElementById("error-Alcohol-Intake").textContent =
+            "0–30 drinks/week";
+          valid = false;
+        } else {
+          document.getElementById("error-Alcohol-Intake").textContent = "";
+        }
+        // Diet Quality
+        const diet = document.getElementById("Diet-Qualtiy");
+        if (diet.value === "" || diet.value < 0 || diet.value > 10) {
+          document.getElementById("error-Diet-Qualtiy").textContent =
+            "0–10 servings/day";
+          valid = false;
+        } else {
+          document.getElementById("error-Diet-Qualtiy").textContent = "";
+        }
+        // Cholesterol
+        const chol = document.getElementById("Cholesterol");
+        if (chol.value === "" || chol.value < 100 || chol.value > 400) {
+          document.getElementById("error-Cholesterol").textContent =
+            "100–400 mg/dL";
+          valid = false;
+        } else {
+          document.getElementById("error-Cholesterol").textContent = "";
+        }
+        // Triglycerides
+        const trig = document.getElementById("Triglycerides");
+        if (trig.value === "" || trig.value < 50 || trig.value > 500) {
+          document.getElementById("error-Triglycerides").textContent =
+            "50–500 mg/dL";
+          valid = false;
+        } else {
+          document.getElementById("error-Triglycerides").textContent = "";
+        }
+        // Waist Circumference
+        const waist = document.getElementById("Waiste-ratio");
+        if (waist.value === "" || waist.value < 60 || waist.value > 150) {
+          document.getElementById("error-Waiste-ratio").textContent =
+            "60–150 cm";
+          valid = false;
+        } else {
+          document.getElementById("error-Waiste-ratio").textContent = "";
+        }
+        if (!valid) e.preventDefault();
       });
     </script>
   </body>

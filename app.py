@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 # Load the trained model and scaler
-with open('diabetes_model.pkl', 'rb') as model_file:
+with open('diabetes_rf_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
 with open('scaler.pkl', 'rb') as scaler_file:
@@ -22,16 +22,28 @@ def about():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get form data
+    # Map categorical values to numbers
+    pa_map = {'Low': 0, 'Medium': 1, 'High': 2}
+    smoke_map = {'Non-Smoker': 0, 'Smoker': 1}
+    fam_map = {'0': 0, '1': 1}
+
     features = [
-        float(request.form['Pregnancies']),
-        float(request.form['Glucose']),
-        float(request.form['BloodPressure']),
-        float(request.form['SkinThickness']),
-        float(request.form['Insulin']),
+        float(request.form['Age']),
         float(request.form['BMI']),
-        float(request.form['DiabetesPedigreeFunction']),
-        float(request.form['Age'])
+        float(request.form['Blood Glucose']),
+        float(request.form['Blood Pressure']),
+        float(request.form['HbA1c']),
+        float(request.form['Insulin Level']),
+        float(request.form['Skin thickness']),
+        float(request.form['Pregnancies']),
+        fam_map.get(request.form['Family history'], 0),
+        pa_map.get(request.form['Physical Activity'], 0),
+        smoke_map.get(request.form['Smoking status'], 0),
+        float(request.form['Alcohol Intake']),
+        float(request.form['Diet Qualtiy']),
+        float(request.form['Cholesterol']),
+        float(request.form['Triglycerides']),
+        float(request.form['Waiste ratio'])
     ]
 
     # Preprocess the input data
