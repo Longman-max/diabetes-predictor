@@ -10,17 +10,45 @@
       href="../static/images/logo.jpeg"
       type="image/x-icon"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
+    />
   </head>
   <body>
     <header>
-      <div style="display: flex; align-items: center; gap: 10px">
-        <div class="pk-logo">
-          <img src="../static/images/logo.jpeg" alt="Logo" />
+      <div class="header-main">
+        <div class="header-left">
+          <div class="pk-logo">
+            <img src="../static/images/logo.jpeg" alt="Logo" />
+          </div>
+          <h1 style="margin: 0">Precious Kings</h1>
         </div>
-        <h1 style="margin: 0">Precious Kings</h1>
-      </div>
-      <div>
-        <a href="/about">About</a>
+        <div class="header-actions" id="header-actions">
+          <button type="button" id="simulate-btn" class="simulate-btn">
+            <span style="color: #111">Simulate</span>
+            <span
+              class="material-symbols-outlined"
+              style="font-size: 28px; color: #111; line-height: 1"
+              >casino</span
+            >
+          </button>
+          <a href="/about" class="about-btn">About</a>
+        </div>
+        <div class="mobile-menu" id="mobile-menu" style="display: none">
+          <button type="button" id="simulate-btn-mobile" class="simulate-btn">
+            <span style="color: #111">Simulate</span>
+            <span
+              class="material-symbols-outlined"
+              style="font-size: 28px; color: #111; line-height: 1"
+              >casino</span
+            >
+          </button>
+          <a href="/about" class="about-btn">About</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" type="button">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
       </div>
     </header>
 
@@ -168,12 +196,12 @@
       <!-- Prediction Result -->
       <div class="prediction-box">
         <h3>Prediction Result</h3>
-        {% if result %}
+        {% with messages = get_flashed_messages() %} {% if messages %}
         <p class="status" id="status-text">Prediction complete</p>
         <div class="progress-bar">
           <span id="progress-bar-span" style="width: 100%"></span>
         </div>
-        <p class="result-text final" id="result-text">{{ result }}</p>
+        <p class="result-text final" id="result-text">{{ messages[0] }}</p>
         <button type="button" id="clear-result-btn">Clear Result</button>
         {% else %}
         <p class="status" id="status-text">Awaiting result...</p>
@@ -182,7 +210,7 @@
         </div>
         <p class="result-text" id="result-text">No prediction yet</p>
         <button type="button" id="clear-result-btn">Clear Result</button>
-        {% endif %}
+        {% endif %} {% endwith %}
       </div>
     </div>
     <script>
@@ -285,6 +313,94 @@
           document.getElementById("error-Waiste-ratio").textContent = "";
         }
         if (!valid) e.preventDefault();
+      });
+      // Simulate random input button logic
+      document
+        .getElementById("simulate-btn")
+        .addEventListener("click", function () {
+          // Fill the form with random values
+          document.querySelector('input[name="Age"]').value =
+            Math.floor(Math.random() * 60) + 18;
+          document.querySelector('input[name="BMI"]').value = (
+            Math.random() * 15 +
+            18
+          ).toFixed(1);
+          document.querySelector('input[name="Blood Glucose"]').value =
+            Math.floor(Math.random() * 100) + 70;
+          document.querySelector('input[name="Blood Pressure"]').value =
+            Math.floor(Math.random() * 80) + 90;
+          document.querySelector('input[name="HbA1c"]').value = (
+            Math.random() * 6 +
+            4
+          ).toFixed(1);
+          document.querySelector('input[name="Insulin Level"]').value =
+            Math.floor(Math.random() * 100) + 20;
+          document.querySelector('input[name="Skin thickness"]').value =
+            Math.floor(Math.random() * 30) + 10;
+          document.querySelector('input[name="Pregnancies"]').value =
+            Math.floor(Math.random() * 10);
+          document.getElementById("Family-history").value =
+            Math.random() > 0.5 ? "1" : "0";
+          document.getElementById("Physical-Activity").value = [
+            "Low",
+            "Medium",
+            "High",
+          ][Math.floor(Math.random() * 3)];
+          document.getElementById("Smoking-status").value =
+            Math.random() > 0.5 ? "Smoker" : "Non-Smoker";
+          document.getElementById("Alcohol-Intake").value = Math.floor(
+            Math.random() * 31
+          );
+          document.getElementById("Diet-Qualtiy").value = Math.floor(
+            Math.random() * 11
+          );
+          document.getElementById("Cholesterol").value =
+            Math.floor(Math.random() * 301) + 100;
+          document.getElementById("Triglycerides").value =
+            Math.floor(Math.random() * 451) + 50;
+          document.getElementById("Waiste-ratio").value =
+            Math.floor(Math.random() * 91) + 60;
+          // Scroll to and focus the Predict button
+          var predictBtn = document.querySelector('form button[type="submit"]');
+          if (predictBtn) {
+            predictBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+            predictBtn.focus();
+          }
+        });
+      // Mobile menu toggle
+      document.addEventListener("DOMContentLoaded", function () {
+        var menuBtn = document.getElementById("menu-btn");
+        var mobileMenu = document.getElementById("mobile-menu");
+        var headerActions = document.getElementById("header-actions");
+        menuBtn.addEventListener("click", function () {
+          if (
+            mobileMenu.style.display === "none" ||
+            mobileMenu.style.display === ""
+          ) {
+            mobileMenu.style.display = "flex";
+          } else {
+            mobileMenu.style.display = "none";
+          }
+        });
+        // Hide mobile menu on resize
+        window.addEventListener("resize", function () {
+          if (window.innerWidth > 600) {
+            mobileMenu.style.display = "none";
+          }
+        });
+        // Simulate button logic for mobile
+        document
+          .getElementById("simulate-btn-mobile")
+          .addEventListener("click", function () {
+            document.getElementById("simulate-btn").click();
+            mobileMenu.style.display = "none";
+            // Scroll to and focus the Predict button
+            var predictBtn = document.querySelector('form button[type="submit"]');
+            if (predictBtn) {
+              predictBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+              predictBtn.focus();
+            }
+          });
       });
     </script>
   </body>

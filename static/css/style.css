@@ -168,7 +168,120 @@ button#clear-result-btn {
   }
 }
 
-@media (max-width: 768px) {
+/* Header Layout */
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.simulate-btn {
+  margin: 0;
+  background: #f5f5f5;
+  border: 1.5px solid #111;
+  padding: 6px 14px 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  font-weight: 600;
+  font-size: 16px;
+  gap: 6px;
+  transition: background 0.2s, border 0.2s;
+}
+.simulate-btn:hover {
+  background: #e0e0e0;
+}
+.about-btn {
+  background: #111;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+.menu-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  height: 40px;
+}
+.menu-btn .material-symbols-outlined {
+  font-size: 32px;
+  color: #111;
+}
+
+/* Material Symbols Outlined font fix */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (max-width: 600px) {
+  .header-main {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    width: 100%;
+  }
+  .header-actions {
+    display: none;
+  }
+  .menu-btn {
+    display: flex;
+    justify-self: end;
+  }
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 16px 20px;
+    z-index: 1000;
+  }
+  .mobile-menu .about-btn,
+  .mobile-menu .simulate-btn {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .two-column {
     grid-template-columns: 1fr;
   }

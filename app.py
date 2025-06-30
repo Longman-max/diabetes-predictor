@@ -1,16 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 import pickle
 import numpy as np
+import pandas as pd
 
-# Load the trained model and scaler
-with open('diabetes_rf_model.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
+# Load model, scaler, and columns
+with open('diabetes_rf_model.pkl', 'rb') as f:
+    model = pickle.load(f)
+with open('scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+with open('columns.pkl', 'rb') as f:
+    columns = pickle.load(f)
 
-with open('scaler.pkl', 'rb') as scaler_file:
-    scaler = pickle.load(scaler_file)
-
-# Initialize the Flask app
 app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'  # Needed for flash messages
 
 @app.route('/')
 def home():
@@ -22,38 +24,38 @@ def about():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Map categorical values to numbers
-    pa_map = {'Low': 0, 'Medium': 1, 'High': 2}
-    smoke_map = {'Non-Smoker': 0, 'Smoker': 1}
-    fam_map = {'0': 0, '1': 1}
-
-    features = [
-        float(request.form['Age']),
-        float(request.form['BMI']),
-        float(request.form['Blood Glucose']),
-        float(request.form['Blood Pressure']),
-        float(request.form['HbA1c']),
-        float(request.form['Insulin Level']),
-        float(request.form['Skin thickness']),
-        float(request.form['Pregnancies']),
-        fam_map.get(request.form['Family history'], 0),
-        pa_map.get(request.form['Physical Activity'], 0),
-        smoke_map.get(request.form['Smoking status'], 0),
-        float(request.form['Alcohol Intake']),
-        float(request.form['Diet Qualtiy']),
-        float(request.form['Cholesterol']),
-        float(request.form['Triglycerides']),
-        float(request.form['Waiste ratio'])
-    ]
-
-    # Preprocess the input data
-    features_scaled = scaler.transform([features])
-
-    # Make prediction
-    prediction = model.predict(features_scaled)
-    result = 'Diabetic' if prediction[0] == 1 else 'Not Diabetic'
-
-    return render_template('index.html', result=result)
+    try:
+        # Collect all features as per FEATURE_COLS in train_model.py
+        input_dict = {col: request.form.get(col, '') for col in [
+            'Age', 'Gender', 'BMI', 'Family_History', 'Physical_Activity', 'Diet_Type',
+            'Smoking_Status', 'Alcohol_Intake', 'Stress_Level', 'Hypertension', 'Cholesterol_Level',
+            'Fasting_Blood_Sugar', 'Postprandial_Blood_Sugar', 'HBA1C', 'Heart_Rate', 'Waist_Hip_Ratio',
+            'Urban_Rural', 'Health_Insurance', 'Regular_Checkups', 'Medication_For_Chronic_Conditions',
+            'Pregnancies', 'Polycystic_Ovary_Syndrome', 'Glucose_Tolerance_Test_Result', 'Vitamin_D_Level',
+            'C_Protein_Level', 'Thyroid_Condition']}
+        # Convert numerics
+        for key in input_dict:
+            try:
+                input_dict[key] = float(input_dict[key])
+            except ValueError:
+                pass  # keep as string for categorical
+        # Create DataFrame
+        X_input = pd.DataFrame([input_dict])
+        # One-hot encode and align columns
+        X_input = pd.get_dummies(X_input, drop_first=True)
+        for col in columns:
+            if col not in X_input:
+                X_input[col] = 0
+        X_input = X_input[columns]
+        # Scale
+        X_scaled = scaler.transform(X_input)
+        prediction = model.predict(X_scaled)
+        result = 'Diabetic' if prediction[0] == 1 else 'Not Diabetic'
+    except Exception as e:
+        result = f'Prediction error: {e}'
+        print(result)
+    flash(result)
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,43 +1,73 @@
+# train_model.py - Rewritten from scratch for diabetes prediction model
+
 # Import necessary libraries
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 import pickle
 
-# Load the updated dataset with 16 features
-# Make sure the filename and column names match your actual dataset
-data = pd.read_csv('diabetes_dataset.csv')
+# Load dataset
+DATA_PATH = 'diabetes_dataset.csv'
+MODEL_PATH = 'diabetes_rf_model.pkl'
+SCALER_PATH = 'scaler.pkl'
 
-# Print columns to help with debugging
-print('Columns in dataset:', list(data.columns))
+# Define feature columns (update these to match your dataset exactly)
+FEATURE_COLS = [
+    'Age', 'Gender', 'BMI', 'Family_History', 'Physical_Activity', 'Diet_Type',
+    'Smoking_Status', 'Alcohol_Intake', 'Stress_Level', 'Hypertension', 'Cholesterol_Level',
+    'Fasting_Blood_Sugar', 'Postprandial_Blood_Sugar', 'HBA1C', 'Heart_Rate', 'Waist_Hip_Ratio',
+    'Urban_Rural', 'Health_Insurance', 'Regular_Checkups', 'Medication_For_Chronic_Conditions',
+    'Pregnancies', 'Polycystic_Ovary_Syndrome', 'Glucose_Tolerance_Test_Result', 'Vitamin_D_Level',
+    'C_Protein_Level', 'Thyroid_Condition'
+]
+TARGET_COL = 'Diabetes_Status'
 
-# Define features (X) and target (y) - update these to match your dataset
-feature_cols = ['Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c', 'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history', 'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet Qualtiy', 'Cholesterol', 'Triglycerides', 'Waiste ratio']
-target_col = 'Outcome'  # Change if your target column is named differently
+def main():
+    # Load data
+    data = pd.read_csv(DATA_PATH)
+    print('Columns in dataset:', list(data.columns))
 
-try:
-    X = data[feature_cols]
-    y = data[target_col]
-    print("Features (X) and Target (y) defined.")
-    print(f"Shape of X: {X.shape}")
-    print(f"Shape of y: {y.shape}")
-except KeyError as e:
-    print(f"KeyError: {e}. Please check that all feature and target column names match your dataset exactly.")
-    raise
+    # Check for missing features
+    missing = [col for col in FEATURE_COLS if col not in data.columns]
+    if missing:
+        print(f"Missing feature columns: {missing}")
+        print("Please update FEATURE_COLS to match your dataset.")
+        return
+    if TARGET_COL not in data.columns:
+        print(f"Target column '{TARGET_COL}' not found. Using last column as target.")
+        target = data.columns[-1]
+    else:
+        target = TARGET_COL
 
-# Preprocess the data: Scale the features
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+    # Prepare features and target
+    X = data[FEATURE_COLS]
+    y = data[target]
+    print(f"Feature shape: {X.shape}, Target shape: {y.shape}")
 
-# Train the Random Forest model
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_scaled, y)
+    # Encode categorical features
+    X = pd.get_dummies(X, drop_first=True)
+    print(f"Features after encoding: {X.shape}")
 
-# Save the trained model and scaler using pickle
-with open('diabetes_rf_model.pkl', 'wb') as model_file:
-    pickle.dump(model, model_file)
+    # Save the columns after encoding for use in prediction
+    with open('columns.pkl', 'wb') as f:
+        pickle.dump(X.columns.tolist(), f)
 
-with open('scaler.pkl', 'wb') as scaler_file:
-    pickle.dump(scaler, scaler_file)
+    # Scale features
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    print("Features scaled.")
 
-print("Model and scaler have been saved successfully as 'diabetes_rf_model.pkl' and 'scaler.pkl'.")
+    # Train model
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_scaled, y)
+    print("Model trained.")
+
+    # Save model and scaler
+    with open(MODEL_PATH, 'wb') as f:
+        pickle.dump(model, f)
+    with open(SCALER_PATH, 'wb') as f:
+        pickle.dump(scaler, f)
+    print(f"Model saved to {MODEL_PATH}, scaler saved to {SCALER_PATH}.")
+
+if __name__ == '__main__':
+    main()
