@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Segoe UI", sans-serif;
   /* background-color: #f2f4f8; */
@@ -190,7 +194,7 @@ button#clear-result-btn {
 }
 .simulate-btn {
   margin: 0;
-  background: #f5f5f5;
+  background: #f5f5f579;
   border: 1.5px solid #111;
   padding: 6px 14px 6px 10px;
   border-radius: 8px;
