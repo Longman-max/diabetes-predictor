@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .slideshow {
+        height: 500px;
+        width: 450px;
+        background-color: white;
+        border: solid 1px;
+        border-radius: 10px;
+        position: relative;
+      }
+
+      .button-holder {
+        position: absolute;
+        display: flex;
+        justify-content: space-around;
+        bottom: 0;
+        right: 0;
+      }
+
+      button {
+        margin: 20px;
+        border-radius: 50%;
+        padding: 10px;
+        border: none;
+        background-color: black;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slideshow">
+      <div class="button-holder">
+        <div><button class="button-1">Back</button></div>
+        <div><button class="button-2">Next</button></div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -14,6 +14,107 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
     />
+    <style>
+      /* Fix for simulate dropdown always showing on hover/focus */
+      .simulate-dropdown-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+      #simulate-dropdown {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        z-index: 9999;
+        min-width: 160px;
+        margin: 0;
+        /* padding: 5px; */
+      }
+      .simulate-dropdown-wrapper:hover #simulate-dropdown,
+      .simulate-dropdown-wrapper:focus-within #simulate-dropdown {
+        display: block !important;
+      }
+      /* Style simulate menu options like the About button */
+      .simulate-option {
+        margin: 0;
+        font-weight: 600;
+        font-size: 15px;
+        color: #111 !important;
+        border: none;
+        width: 100%;
+        text-align: left;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.15s;
+        border-radius: 0px !important;
+      }
+
+      .simulate-option:hover,
+      .simulate-option:focus {
+        background: #222 !important;
+        color: #fff !important;
+      }
+
+      .simulate-option:first-child {
+        border-top-left-radius: 8px !important;
+        border-top-right-radius: 8px !important;
+      }
+      .simulate-option:second-child {
+        border-bottom-left-radius: 8px !important;
+        border-bottom-right-radius: 8px !important;
+      }
+
+      /* Responsive menu bar for mobile */
+      @media (max-width: 600px) {
+        .header-actions {
+          display: none !important;
+        }
+        .mobile-menu {
+          display: none; /* Only shown by JS */
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0;
+          overflow: hidden;
+          height: 0;
+          transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-btn {
+          display: block !important;
+        }
+        /* Make dropdown flow in menu for height animation */
+        .simulate-dropdown-wrapper-mobile #simulate-dropdown-mobile {
+          position: static !important;
+          width: 100% !important;
+          margin: 0;
+          display: none;
+          background: #fff;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          z-index: 1;
+          min-width: 160px;
+        }
+        .simulate-dropdown-wrapper-mobile.open #simulate-dropdown-mobile {
+          display: block;
+        }
+      }
+      @media (min-width: 601px) {
+        .header-actions {
+          display: flex !important;
+        }
+        .mobile-menu {
+          display: none !important;
+        }
+        .menu-btn {
+          display: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -25,26 +126,161 @@
           <h1 style="margin: 0">Precious Kings</h1>
         </div>
         <div class="header-actions" id="header-actions">
-          <button type="button" id="simulate-btn" class="simulate-btn">
-            <span style="color: #111">Simulate</span>
-            <span
-              class="material-symbols-outlined"
-              style="font-size: 28px; color: #111; line-height: 1"
-              >casino</span
+          <div class="simulate-dropdown-wrapper">
+            <button
+              type="button"
+              id="simulate-btn"
+              class="simulate-btn"
+              aria-haspopup="true"
+              aria-expanded="false"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+              "
             >
-          </button>
+              <span style="color: #111">Simulate</span>
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 28px; color: #111; line-height: 1"
+                >casino</span
+              >
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 24px; color: #111; vertical-align: middle"
+                >arrow_drop_down</span
+              >
+            </button>
+            <div id="simulate-dropdown">
+              <button
+                type="button"
+                class="simulate-option"
+                id="simulate-7"
+                style="
+                  width: 100%;
+                  text-align: left;
+                  padding: 10px 16px;
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  color: #111;
+                "
+              >
+                7 fields
+              </button>
+              <button
+                type="button"
+                class="simulate-option"
+                id="simulate-all"
+                style="
+                  width: 100%;
+                  text-align: left;
+                  padding: 10px 16px;
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  color: #111;
+                "
+              >
+                Simulate All
+              </button>
+            </div>
+          </div>
           <a href="/about" class="about-btn">About</a>
         </div>
-        <div class="mobile-menu" id="mobile-menu" style="display: none">
-          <button type="button" id="simulate-btn-mobile" class="simulate-btn">
-            <span style="color: #111">Simulate</span>
-            <span
-              class="material-symbols-outlined"
-              style="font-size: 28px; color: #111; line-height: 1"
-              >casino</span
+        <div
+          class="mobile-menu"
+          id="mobile-menu"
+          style="display: none; flex-direction: column; align-items: flex-start; gap: 0; height: 0; overflow: hidden;"
+        >
+          <div
+            class="simulate-dropdown-wrapper-mobile"
+            id="simulate-dropdown-wrapper-mobile"
+            style="width: 100%; position: relative"
+          >
+            <button
+              type="button"
+              id="simulate-btn-mobile"
+              class="simulate-btn"
+              aria-haspopup="true"
+              aria-expanded="false"
+              style="
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+              "
             >
-          </button>
-          <a href="/about" class="about-btn">About</a>
+              <span style="color: #111">Simulate</span>
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 28px; color: #111; line-height: 1"
+                >casino</span
+              >
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 24px; color: #111; vertical-align: middle"
+                >arrow_drop_down</span
+              >
+            </button>
+            <div
+              id="simulate-dropdown-mobile"
+              style="
+                /* position: absolute; */
+                /* left: 0; */
+                /* top: 100%; */
+                background: #fff;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                z-index: 1;
+                min-width: 160px;
+                width: 100%;
+                margin: 0;
+              "
+            >
+              <button
+                type="button"
+                class="simulate-option"
+                id="simulate-7-mobile"
+                style="
+                  width: 100%;
+                  text-align: left;
+                  padding: 10px 16px;
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  color: #111;
+                "
+              >
+                7 fields
+              </button>
+              <button
+                type="button"
+                class="simulate-option"
+                id="simulate-all-mobile"
+                style="
+                  width: 100%;
+                  text-align: left;
+                  padding: 10px 16px;
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  color: #111;
+                "
+              >
+                Simulate All
+              </button>
+            </div>
+          </div>
+          <a
+            href="/about"
+            class="about-btn"
+            style="width: 100%; margin-top: 4px"
+            >About</a
+          >
         </div>
         <button class="menu-btn" id="menu-btn" type="button">
           <span class="material-symbols-outlined">menu</span>
@@ -87,21 +323,26 @@
               <label for="Skin thickness">Skin thickness:</label>
               <input type="number" name="Skin thickness" required />
             </div>
+            <!-- The rest of the fields are now optional -->
             <div class="form-group">
-              <label for="Pregnancies">Pregnancies:</label>
+              <label for="Pregnancies"
+                >Pregnancies: <span class="clinical-range">(0–17)</span></label
+              >
               <input
                 type="number"
                 name="Pregnancies"
                 id="Pregnancies"
                 min="0"
                 max="17"
-                required
               />
               <span class="error-message" id="error-Pregnancies"></span>
             </div>
             <div class="form-group">
-              <label for="Family history">Family History:</label>
-              <select name="Family history" id="Family-history" required>
+              <label for="Family history"
+                >Family History:
+                <span class="clinical-range">(Yes/No)</span></label
+              >
+              <select name="Family history" id="Family-history">
                 <option value="">Select</option>
                 <option value="0">No</option>
                 <option value="1">Yes</option>
@@ -109,8 +350,11 @@
               <span class="error-message" id="error-Family-history"></span>
             </div>
             <div class="form-group">
-              <label for="Physical Activity">Physical Activity:</label>
-              <select name="Physical Activity" id="Physical-Activity" required>
+              <label for="Physical Activity"
+                >Physical Activity:
+                <span class="clinical-range">(Low/Medium/High)</span></label
+              >
+              <select name="Physical Activity" id="Physical-Activity">
                 <option value="">Select</option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -119,8 +363,11 @@
               <span class="error-message" id="error-Physical-Activity"></span>
             </div>
             <div class="form-group">
-              <label for="Smoking status">Smoking Status:</label>
-              <select name="Smoking status" id="Smoking-status" required>
+              <label for="Smoking status"
+                >Smoking Status:
+                <span class="clinical-range">(Smoker/Non-Smoker)</span></label
+              >
+              <select name="Smoking status" id="Smoking-status">
                 <option value="">Select</option>
                 <option value="Smoker">Smoker</option>
                 <option value="Non-Smoker">Non-Smoker</option>
@@ -128,62 +375,72 @@
               <span class="error-message" id="error-Smoking-status"></span>
             </div>
             <div class="form-group">
-              <label for="Alcohol Intake">Alcohol Intake (drinks/week):</label>
+              <label for="Alcohol Intake"
+                >Alcohol Intake (drinks/week):
+                <span class="clinical-range">(0–30)</span></label
+              >
               <input
                 type="number"
                 name="Alcohol Intake"
                 id="Alcohol-Intake"
                 min="0"
                 max="30"
-                required
               />
               <span class="error-message" id="error-Alcohol-Intake"></span>
             </div>
             <div class="form-group">
-              <label for="Diet Qualtiy">Diet Quality (servings/day):</label>
+              <label for="Diet Qualtiy"
+                >Diet Quality (servings/day):
+                <span class="clinical-range">(0–10)</span></label
+              >
               <input
                 type="number"
                 name="Diet Qualtiy"
                 id="Diet-Qualtiy"
                 min="0"
                 max="10"
-                required
               />
               <span class="error-message" id="error-Diet-Qualtiy"></span>
             </div>
             <div class="form-group">
-              <label for="Cholesterol">Cholesterol (mg/dL):</label>
+              <label for="Cholesterol"
+                >Cholesterol (mg/dL):
+                <span class="clinical-range">(100–400)</span></label
+              >
               <input
                 type="number"
                 name="Cholesterol"
                 id="Cholesterol"
                 min="100"
                 max="400"
-                required
               />
               <span class="error-message" id="error-Cholesterol"></span>
             </div>
             <div class="form-group">
-              <label for="Triglycerides">Triglycerides (mg/dL):</label>
+              <label for="Triglycerides"
+                >Triglycerides (mg/dL):
+                <span class="clinical-range">(50–500)</span></label
+              >
               <input
                 type="number"
                 name="Triglycerides"
                 id="Triglycerides"
                 min="50"
                 max="500"
-                required
               />
               <span class="error-message" id="error-Triglycerides"></span>
             </div>
             <div class="form-group">
-              <label for="Waiste ratio">Waist Circumference (cm):</label>
+              <label for="Waiste ratio"
+                >Waist Circumference (cm):
+                <span class="clinical-range">(60–150)</span></label
+              >
               <input
                 type="number"
                 name="Waiste ratio"
                 id="Waiste-ratio"
                 min="60"
                 max="150"
-                required
               />
               <span class="error-message" id="error-Waiste-ratio"></span>
             </div>
@@ -225,6 +482,99 @@
             document.getElementById("result-text").textContent =
               "No prediction yet";
           });
+        }
+        // Responsive menu toggle
+        var menuBtn = document.getElementById("menu-btn");
+        var mobileMenu = document.getElementById("mobile-menu");
+        function setMobileMenuHeight() {
+          if (window.innerWidth > 600) return;
+          mobileMenu.style.height = mobileMenu.scrollHeight + "px";
+        }
+        function closeMobileMenu() {
+          mobileMenu.style.height = mobileMenu.scrollHeight + "px";
+          requestAnimationFrame(function () {
+            mobileMenu.style.height = "0px";
+          });
+          setTimeout(function () {
+            mobileMenu.style.display = "none";
+          }, 350);
+        }
+        menuBtn.addEventListener("click", function () {
+          if (
+            mobileMenu.style.display === "none" ||
+            mobileMenu.style.display === ""
+          ) {
+            mobileMenu.style.display = "flex";
+            requestAnimationFrame(function () {
+              setMobileMenuHeight();
+            });
+          } else {
+            closeMobileMenu();
+          }
+        });
+        // Hide mobile menu on resize if switching to desktop
+        window.addEventListener("resize", function () {
+          if (window.innerWidth > 600) {
+            mobileMenu.style.display = "none";
+            mobileMenu.style.height = "0px";
+          }
+        });
+        // --- Mobile Simulate Dropdown Logic ---
+        var simulateBtnMobile = document.getElementById("simulate-btn-mobile");
+        var simulateDropdownMobile = document.getElementById("simulate-dropdown-mobile");
+        var simulateDropdownWrapperMobile = document.getElementById("simulate-dropdown-wrapper-mobile");
+        function openSimDropdown() {
+          simulateDropdownWrapperMobile.classList.add("open");
+          setMobileMenuHeight();
+          simulateBtnMobile.setAttribute("aria-expanded", "true");
+        }
+        function closeSimDropdown() {
+          simulateDropdownWrapperMobile.classList.remove("open");
+          setMobileMenuHeight();
+          simulateBtnMobile.setAttribute("aria-expanded", "false");
+        }
+        if (simulateBtnMobile && simulateDropdownMobile) {
+          // Click to toggle
+          simulateBtnMobile.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var expanded = simulateBtnMobile.getAttribute("aria-expanded") === "true";
+            if (!expanded) {
+              openSimDropdown();
+            } else {
+              closeSimDropdown();
+            }
+          });
+          // Hover to open/close (only on mobile view)
+          simulateBtnMobile.addEventListener("mouseenter", function () {
+            if (window.innerWidth <= 600) openSimDropdown();
+          });
+          simulateDropdownWrapperMobile.addEventListener("mouseleave", function () {
+            if (window.innerWidth <= 600) closeSimDropdown();
+          });
+          // Hide dropdown when clicking outside
+          document.addEventListener("click", function (e) {
+            if (
+              !simulateDropdownWrapperMobile.contains(e.target) &&
+              e.target !== simulateBtnMobile &&
+              window.innerWidth <= 600
+            ) {
+              closeSimDropdown();
+            }
+          });
+          // Option actions
+          var fill7Fields = window.fill7Fields;
+          var fillAllFields = window.fillAllFields;
+          var scrollToPredict = window.scrollToPredict;
+          document.getElementById("simulate-7-mobile").onclick = function () {
+            if (typeof fill7Fields === "function") fill7Fields();
+            if (typeof scrollToPredict === "function") scrollToPredict();
+            closeSimDropdown();
+          };
+          document.getElementById("simulate-all-mobile").onclick = function () {
+            if (typeof fillAllFields === "function") fillAllFields();
+            if (typeof scrollToPredict === "function") scrollToPredict();
+            closeSimDropdown();
+          };
         }
       });
       // Validation logic
@@ -315,93 +665,95 @@
         if (!valid) e.preventDefault();
       });
       // Simulate random input button logic
-      document
-        .getElementById("simulate-btn")
-        .addEventListener("click", function () {
-          // Fill the form with random values
-          document.querySelector('input[name="Age"]').value =
-            Math.floor(Math.random() * 60) + 18;
-          document.querySelector('input[name="BMI"]').value = (
-            Math.random() * 15 +
-            18
-          ).toFixed(1);
-          document.querySelector('input[name="Blood Glucose"]').value =
-            Math.floor(Math.random() * 100) + 70;
-          document.querySelector('input[name="Blood Pressure"]').value =
-            Math.floor(Math.random() * 80) + 90;
-          document.querySelector('input[name="HbA1c"]').value = (
-            Math.random() * 6 +
-            4
-          ).toFixed(1);
-          document.querySelector('input[name="Insulin Level"]').value =
-            Math.floor(Math.random() * 100) + 20;
-          document.querySelector('input[name="Skin thickness"]').value =
-            Math.floor(Math.random() * 30) + 10;
-          document.querySelector('input[name="Pregnancies"]').value =
-            Math.floor(Math.random() * 10);
-          document.getElementById("Family-history").value =
-            Math.random() > 0.5 ? "1" : "0";
-          document.getElementById("Physical-Activity").value = [
-            "Low",
-            "Medium",
-            "High",
-          ][Math.floor(Math.random() * 3)];
-          document.getElementById("Smoking-status").value =
-            Math.random() > 0.5 ? "Smoker" : "Non-Smoker";
-          document.getElementById("Alcohol-Intake").value = Math.floor(
-            Math.random() * 31
-          );
-          document.getElementById("Diet-Qualtiy").value = Math.floor(
-            Math.random() * 11
-          );
-          document.getElementById("Cholesterol").value =
-            Math.floor(Math.random() * 301) + 100;
-          document.getElementById("Triglycerides").value =
-            Math.floor(Math.random() * 451) + 50;
-          document.getElementById("Waiste-ratio").value =
-            Math.floor(Math.random() * 91) + 60;
-          // Scroll to and focus the Predict button
-          var predictBtn = document.querySelector('form button[type="submit"]');
-          if (predictBtn) {
-            predictBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-            predictBtn.focus();
-          }
-        });
-      // Mobile menu toggle
-      document.addEventListener("DOMContentLoaded", function () {
-        var menuBtn = document.getElementById("menu-btn");
-        var mobileMenu = document.getElementById("mobile-menu");
-        var headerActions = document.getElementById("header-actions");
-        menuBtn.addEventListener("click", function () {
-          if (
-            mobileMenu.style.display === "none" ||
-            mobileMenu.style.display === ""
-          ) {
-            mobileMenu.style.display = "flex";
-          } else {
-            mobileMenu.style.display = "none";
-          }
-        });
-        // Hide mobile menu on resize
-        window.addEventListener("resize", function () {
-          if (window.innerWidth > 600) {
-            mobileMenu.style.display = "none";
-          }
-        });
-        // Simulate button logic for mobile
-        document
-          .getElementById("simulate-btn-mobile")
-          .addEventListener("click", function () {
-            document.getElementById("simulate-btn").click();
-            mobileMenu.style.display = "none";
-            // Scroll to and focus the Predict button
-            var predictBtn = document.querySelector('form button[type="submit"]');
-            if (predictBtn) {
-              predictBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-              predictBtn.focus();
-            }
-          });
-      });
+      // (Removed simulate-btn click handler to avoid conflict with dropdown)
+      // Dropdown for simulate button (hover to show, closes on mouseleave/outside click)
+      const simulateBtn = document.getElementById("simulate-btn");
+      const dropdown = document.getElementById("simulate-dropdown");
+      const simulateBtnWrapper = simulateBtn.parentElement;
+      // Remove JS show/hide for dropdown, keep only click actions
+      function fill7Fields() {
+        document.querySelector('input[name="Age"]').value =
+          Math.floor(Math.random() * 60) + 18;
+        document.querySelector('input[name="BMI"]').value = (
+          Math.random() * 15 +
+          18
+        ).toFixed(1);
+        document.querySelector('input[name="Blood Glucose"]').value =
+          Math.floor(Math.random() * 100) + 70;
+        document.querySelector('input[name="Blood Pressure"]').value =
+          Math.floor(Math.random() * 80) + 90;
+        document.querySelector('input[name="HbA1c"]').value = (
+          Math.random() * 6 +
+          4
+        ).toFixed(1);
+        document.querySelector('input[name="Insulin Level"]').value =
+          Math.floor(Math.random() * 100) + 20;
+        document.querySelector('input[name="Skin thickness"]').value =
+          Math.floor(Math.random() * 30) + 10;
+        // Clear the rest
+        document.getElementById("Pregnancies").value = "";
+        document.getElementById("Family-history").value = "";
+        document.getElementById("Physical-Activity").value = "";
+        document.getElementById("Smoking-status").value = "";
+        document.getElementById("Alcohol-Intake").value = "";
+        document.getElementById("Diet-Qualtiy").value = "";
+        document.getElementById("Cholesterol").value = "";
+        document.getElementById("Triglycerides").value = "";
+        document.getElementById("Waiste-ratio").value = "";
+      }
+      function fillAllFields() {
+        fill7Fields();
+        document.getElementById("Pregnancies").value = Math.floor(
+          Math.random() * 10
+        );
+        document.getElementById("Family-history").value =
+          Math.random() > 0.5 ? "1" : "0";
+        document.getElementById("Physical-Activity").value = [
+          "Low",
+          "Medium",
+          "High",
+        ][Math.floor(Math.random() * 3)];
+        document.getElementById("Smoking-status").value =
+          Math.random() > 0.5 ? "Smoker" : "Non-Smoker";
+        document.getElementById("Alcohol-Intake").value = Math.floor(
+          Math.random() * 31
+        );
+        document.getElementById("Diet-Qualtiy").value = Math.floor(
+          Math.random() * 11
+        );
+        document.getElementById("Cholesterol").value =
+          Math.floor(Math.random() * 301) + 100;
+        document.getElementById("Triglycerides").value =
+          Math.floor(Math.random() * 451) + 50;
+        document.getElementById("Waiste-ratio").value =
+          Math.floor(Math.random() * 91) + 60;
+      }
+      function scrollToPredict() {
+        var predictBtn = document.querySelector('form button[type="submit"]');
+        if (predictBtn) {
+          predictBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+          predictBtn.focus();
+        }
+      }
+      if (document.getElementById("simulate-7")) {
+        document.getElementById("simulate-7").onclick = function () {
+          fill7Fields();
+          scrollToPredict();
+        };
+      }
+      if (document.getElementById("simulate-all")) {
+        document.getElementById("simulate-all").onclick = function () {
+          fillAllFields();
+          scrollToPredict();
+        };
+      }
+      // CSS fix for dropdown z-index and overflow
+      const style = document.createElement("style");
+      style.innerHTML = `
+        #simulate-dropdown { z-index: 9999 !important; }
+        .header-main, .header-actions { overflow: visible !important; }
+      `;
+      document.head.appendChild(style);
     </script>
   </body>
 </html>
