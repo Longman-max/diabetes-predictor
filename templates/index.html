@@ -192,7 +192,14 @@
         <div
           class="mobile-menu"
           id="mobile-menu"
-          style="display: none; flex-direction: column; align-items: flex-start; gap: 0; height: 0; overflow: hidden;"
+          style="
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            height: 0;
+            overflow: hidden;
+          "
         >
           <div
             class="simulate-dropdown-wrapper-mobile"
@@ -203,8 +210,8 @@
               type="button"
               id="simulate-btn-mobile"
               class="simulate-btn"
-              aria-haspopup="true"
               aria-expanded="false"
+              aria-haspopup="true"
               style="
                 width: 100%;
                 display: flex;
@@ -294,6 +301,7 @@
       <!-- Form -->
       <div class="form-box">
         <form action="/predict" method="post">
+          <h3>Medical Information</h3>
           <div class="form-grid">
             <div class="form-group">
               <label for="Age">Age:</label>
@@ -458,14 +466,68 @@
         <div class="progress-bar">
           <span id="progress-bar-span" style="width: 100%"></span>
         </div>
+        <div class="brain-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="60"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-brain-icon lucide-brain"
+          >
+            <path d="M12 18V5" />
+            <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" />
+            <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
+            <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
+            <path d="M18 18a4 4 0 0 0 2-7.464" />
+            <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
+            <path d="M6 18a4 4 0 0 1-2-7.464" />
+            <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
+          </svg>
+        </div>
         <p class="result-text final" id="result-text">{{ messages[0] }}</p>
+        <p class="instruction-text">
+          Enter your medical information and click "Predict" to see your
+          diabetes risk assessment.
+        </p>
         <button type="button" id="clear-result-btn">Clear Result</button>
         {% else %}
         <p class="status" id="status-text">Awaiting result...</p>
         <div class="progress-bar">
           <span id="progress-bar-span" style="width: 0%"></span>
         </div>
+        <div class="brain-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="60"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-brain-icon lucide-brain"
+          >
+            <path d="M12 18V5" />
+            <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" />
+            <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
+            <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
+            <path d="M18 18a4 4 0 0 0 2-7.464" />
+            <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
+            <path d="M6 18a4 4 0 0 1-2-7.464" />
+            <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
+          </svg>
+        </div>
         <p class="result-text" id="result-text">No prediction yet</p>
+        <p class="instruction-text">
+          Enter your medical information and click "Predict" to see your
+          diabetes risk assessment.
+        </p>
         <button type="button" id="clear-result-btn">Clear Result</button>
         {% endif %} {% endwith %}
       </div>
@@ -521,8 +583,12 @@
         });
         // --- Mobile Simulate Dropdown Logic ---
         var simulateBtnMobile = document.getElementById("simulate-btn-mobile");
-        var simulateDropdownMobile = document.getElementById("simulate-dropdown-mobile");
-        var simulateDropdownWrapperMobile = document.getElementById("simulate-dropdown-wrapper-mobile");
+        var simulateDropdownMobile = document.getElementById(
+          "simulate-dropdown-mobile"
+        );
+        var simulateDropdownWrapperMobile = document.getElementById(
+          "simulate-dropdown-wrapper-mobile"
+        );
         function openSimDropdown() {
           simulateDropdownWrapperMobile.classList.add("open");
           setMobileMenuHeight();
@@ -537,7 +603,8 @@
           // Click to toggle
           simulateBtnMobile.addEventListener("click", function (e) {
             e.stopPropagation();
-            var expanded = simulateBtnMobile.getAttribute("aria-expanded") === "true";
+            var expanded =
+              simulateBtnMobile.getAttribute("aria-expanded") === "true";
             if (!expanded) {
               openSimDropdown();
             } else {
@@ -548,9 +615,12 @@
           simulateBtnMobile.addEventListener("mouseenter", function () {
             if (window.innerWidth <= 600) openSimDropdown();
           });
-          simulateDropdownWrapperMobile.addEventListener("mouseleave", function () {
-            if (window.innerWidth <= 600) closeSimDropdown();
-          });
+          simulateDropdownWrapperMobile.addEventListener(
+            "mouseleave",
+            function () {
+              if (window.innerWidth <= 600) closeSimDropdown();
+            }
+          );
           // Hide dropdown when clicking outside
           document.addEventListener("click", function (e) {
             if (
