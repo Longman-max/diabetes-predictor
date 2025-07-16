@@ -1,18 +1,63 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 import pickle
 import numpy as np
 import pandas as pd
+import os
+
+app = Flask(__name__, 
+            static_folder='static',  # specify the static folder
+            template_folder='templates')  # specify the template folder
+
+# Ensure the instance folder exists
+os.makedirs(app.instance_path, exist_ok=True)
+
+# Configure static file serving
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Disable caching during development
+app.secret_key = 'your_secret_key_here'
 
 # Load model, scaler, and columns
-with open('diabetes_rf_model.pkl', 'rb') as f:
-    model = pickle.load(f)
-with open('scaler.pkl', 'rb') as f:
-    scaler = pickle.load(f)
-with open('columns.pkl', 'rb') as f:
-    columns = pickle.load(f)
+try:
+    print("Loading model files...")
+    with open('diabetes_rf_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    with open('scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+    with open('columns.pkl', 'rb') as f:
+        columns = pickle.load(f)
+    print("Model files loaded successfully")
+except Exception as e:
+    print(f"Error loading model files: {e}")
+    raise
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Needed for flash messages
+def classify_risk(prob, features):
+    """Classify risk based on probability and feature values"""
+    # Base risk on probability
+    base_risk = 'Low' if prob < 0.3 else 'Moderate' if prob < 0.6 else 'High'
+    
+    # Additional risk factors that could elevate the risk level
+    risk_factors = 0
+    
+    # Check key indicators
+    if features.get('Blood Glucose', 0) > 140:  # High blood glucose
+        risk_factors += 1
+    if features.get('HbA1c', 0) > 6.0:  # Elevated HbA1c
+        risk_factors += 2
+    if features.get('BMI', 0) > 30:  # Obese
+        risk_factors += 1
+    if features.get('Family history') == '1':  # Family history
+        risk_factors += 1
+    if features.get('Blood Pressure', 0) > 140:  # High blood pressure
+        risk_factors += 1
+    
+    # Adjust risk level based on risk factors
+    if risk_factors >= 3:
+        return 'High'
+    elif risk_factors >= 2:
+        return 'Moderate' if base_risk == 'Low' else 'High'
+    elif risk_factors >= 1:
+        return 'Moderate' if base_risk == 'Low' else base_risk
+        
+    return base_risk
 
 @app.route('/')
 def home():
@@ -25,37 +70,76 @@ def about():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Collect all features as per FEATURE_COLS in train_model.py
+        # Gather input from form fields
         input_dict = {col: request.form.get(col, '') for col in [
-            'Age', 'Gender', 'BMI', 'Family_History', 'Physical_Activity', 'Diet_Type',
-            'Smoking_Status', 'Alcohol_Intake', 'Stress_Level', 'Hypertension', 'Cholesterol_Level',
-            'Fasting_Blood_Sugar', 'Postprandial_Blood_Sugar', 'HBA1C', 'Heart_Rate', 'Waist_Hip_Ratio',
-            'Urban_Rural', 'Health_Insurance', 'Regular_Checkups', 'Medication_For_Chronic_Conditions',
-            'Pregnancies', 'Polycystic_Ovary_Syndrome', 'Glucose_Tolerance_Test_Result', 'Vitamin_D_Level',
-            'C_Protein_Level', 'Thyroid_Condition']}
-        # Convert numerics
+            'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c', 
+            'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history',
+            'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet Qualtiy',
+            'Cholesterol', 'Triglycerides', 'Waiste ratio'
+        ]}
+
+        # Convert numeric features
         for key in input_dict:
             try:
                 input_dict[key] = float(input_dict[key])
             except ValueError:
-                pass  # keep as string for categorical
-        # Create DataFrame
+                pass  # Keep categorical as string
+
+        # Create input DataFrame
         X_input = pd.DataFrame([input_dict])
+
         # One-hot encode and align columns
         X_input = pd.get_dummies(X_input, drop_first=True)
         for col in columns:
             if col not in X_input:
                 X_input[col] = 0
         X_input = X_input[columns]
-        # Scale
+
+        # Scale features
         X_scaled = scaler.transform(X_input)
-        prediction = model.predict(X_scaled)
-        result = 'Diabetic' if prediction[0] == 1 else 'Not Diabetic'
+
+        # Predict
+        prediction = model.predict(X_scaled)[0]
+        prob = model.predict_proba(X_scaled)[0][1]  # Probability of class 1
+        risk_level = classify_risk(prob, input_dict)
+        
+        # Format probability as percentage
+        prob_percentage = f"{prob * 100:.1f}%"
+        
+        # Build detailed result message
+        if prediction == 1:
+            if risk_level == 'High':
+                result = f"High Risk of Diabetes (Probability: {prob_percentage})"
+            else:
+                result = f"Potential Diabetes ({risk_level} Risk, Probability: {prob_percentage})"
+        else:
+            if risk_level == 'High':
+                result = f"Pre-diabetic Indicators (High Risk, Probability: {prob_percentage})"
+            elif risk_level == 'Moderate':
+                result = f"Pre-diabetic Indicators (Moderate Risk, Probability: {prob_percentage})"
+            else:
+                result = f"Low Risk of Diabetes (Probability: {prob_percentage})"
+
     except Exception as e:
         result = f'Prediction error: {e}'
-        print(result)
+        print(f"Prediction error details: {str(e)}")
+
     flash(result)
     return redirect(url_for('home'))
 
+# Error handlers
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('index.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('index.html'), 500
+
+# Route to serve static files
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

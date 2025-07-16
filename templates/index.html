@@ -141,11 +141,7 @@
               "
             >
               <span style="color: #111">Simulate</span>
-              <span
-                class="material-symbols-outlined"
-                style="font-size: 28px; color: #111; line-height: 1"
-                >casino</span
-              >
+
               <span
                 class="material-symbols-outlined"
                 style="font-size: 24px; color: #111; vertical-align: middle"
@@ -153,37 +149,20 @@
               >
             </button>
             <div id="simulate-dropdown">
-              <button
-                type="button"
-                class="simulate-option"
-                id="simulate-7"
-                style="
-                  width: 100%;
-                  text-align: left;
-                  padding: 10px 16px;
-                  background: none;
-                  border: none;
-                  cursor: pointer;
-                  color: #111;
-                "
-              >
-                7 fields
+              <button type="button" class="simulate-option" id="simulate-no-risk">
+                Simulate No Risk
               </button>
-              <button
-                type="button"
-                class="simulate-option"
-                id="simulate-all"
-                style="
-                  width: 100%;
-                  text-align: left;
-                  padding: 10px 16px;
-                  background: none;
-                  border: none;
-                  cursor: pointer;
-                  color: #111;
-                "
-              >
-                Simulate All
+              <button type="button" class="simulate-option" id="simulate-low-risk">
+                Simulate Low Risk
+              </button>
+              <button type="button" class="simulate-option" id="simulate-moderate-risk">
+                Simulate Moderate Risk
+              </button>
+              <button type="button" class="simulate-option" id="simulate-high-risk">
+                Simulate High Risk
+              </button>
+              <button type="button" class="simulate-option" id="simulate-random">
+                Simulate Random
               </button>
             </div>
           </div>
@@ -248,22 +227,6 @@
                 margin: 0;
               "
             >
-              <button
-                type="button"
-                class="simulate-option"
-                id="simulate-7-mobile"
-                style="
-                  width: 100%;
-                  text-align: left;
-                  padding: 10px 16px;
-                  background: none;
-                  border: none;
-                  cursor: pointer;
-                  color: #111;
-                "
-              >
-                7 fields
-              </button>
               <button
                 type="button"
                 class="simulate-option"
@@ -467,27 +430,14 @@
         <div class="progress-bar">
           <span id="progress-bar-span" style="width: 100%"></span>
         </div>
-        <div class="brain-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="60"
-            height="60"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-brain-icon lucide-brain"
-          >
-            <path d="M12 18V5" />
-            <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" />
-            <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
-            <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
-            <path d="M18 18a4 4 0 0 0 2-7.464" />
-            <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
-            <path d="M6 18a4 4 0 0 1-2-7.464" />
-            <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
+        <div class="health-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-medical-icon lucide-briefcase-medical">
+            <path d="M12 11v4"/>
+            <path d="M14 13h-4"/>
+            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            <path d="M18 6v14"/>
+            <path d="M6 6v14"/>
+            <rect width="20" height="14" x="2" y="6" rx="2"/>
           </svg>
         </div>
         <p class="result-text final" id="result-text">{{ messages[0] }}</p>
@@ -501,27 +451,14 @@
         <div class="progress-bar">
           <span id="progress-bar-span" style="width: 0%"></span>
         </div>
-        <div class="brain-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="60"
-            height="60"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-brain-icon lucide-brain"
-          >
-            <path d="M12 18V5" />
-            <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" />
-            <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
-            <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
-            <path d="M18 18a4 4 0 0 0 2-7.464" />
-            <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
-            <path d="M6 18a4 4 0 0 1-2-7.464" />
-            <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
+        <div class="health-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-medical-icon lucide-briefcase-medical">
+            <path d="M12 11v4"/>
+            <path d="M14 13h-4"/>
+            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            <path d="M18 6v14"/>
+            <path d="M6 6v14"/>
+            <rect width="20" height="14" x="2" y="6" rx="2"/>
           </svg>
         </div>
         <p class="result-text" id="result-text">No prediction yet</p>
@@ -533,6 +470,355 @@
         {% endif %} {% endwith %}
       </div>
     </div>
-  <script src="../static/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  var clearBtn = document.getElementById("clear-result-btn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      document.getElementById("status-text").textContent = "Awaiting result...";
+      document.getElementById("progress-bar-span").style.width = "0%";
+      document.getElementById("progress-bar-span").style.animation = "";
+      document.getElementById("result-text").textContent = "No prediction yet";
+      updateHealthIcon("none"); // Reset icon
+    });
+  }
+
+  // Function to update health icon based on risk level
+  function updateHealthIcon(risk) {
+    const healthIcon = document.querySelector('.health-icon');
+    if (!healthIcon) return;
+
+    // Remove any existing risk classes
+    healthIcon.classList.remove('high-risk', 'medium-risk', 'low-risk');
+
+    // Define the SVG based on risk level
+    const medicalBriefcaseSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-medical-icon lucide-briefcase-medical">
+            <path d="M12 11v4"/>
+            <path d="M14 13h-4"/>
+            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            <path d="M18 6v14"/>
+            <path d="M6 6v14"/>
+            <rect width="20" height="14" x="2" y="6" rx="2"/>
+          </svg>`;
+
+    const alertTriangleSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+            <path d="M12 9v4"/>
+            <path d="M12 17h.01"/>
+          </svg>`;
+
+    // Update icon and class based on risk level
+    if (risk === "high") {
+      healthIcon.innerHTML = alertTriangleSVG;
+      healthIcon.classList.add('high-risk');
+    } else if (risk === "medium") {
+      healthIcon.innerHTML = alertTriangleSVG;
+      healthIcon.classList.add('medium-risk');
+    } else {
+      healthIcon.innerHTML = medicalBriefcaseSVG;
+      healthIcon.classList.add('low-risk');
+    }
+  }
+
+  // Check prediction result when available
+  const resultText = document.getElementById('result-text');
+  if (resultText && resultText.textContent !== "No prediction yet") {
+    const text = resultText.textContent.toLowerCase();
+    if (text.includes('high risk') || text.includes('high likelihood')) {
+      updateHealthIcon('high');
+    } else if (text.includes('medium risk') || text.includes('moderate')) {
+      updateHealthIcon('medium');
+    } else if (text.includes('low risk') || text.includes('unlikely')) {
+      updateHealthIcon('low');
+    }
+  }
+});
+// Validation logic
+const form = document.querySelector("form");
+form.addEventListener("submit", function (e) {
+  let valid = true;
+  // Pregnancies
+  const preg = document.getElementById("Pregnancies");
+  if (preg.value === "" || preg.value < 0 || preg.value > 17) {
+    document.getElementById("error-Pregnancies").textContent = "Enter 0–17";
+    valid = false;
+  } else {
+    document.getElementById("error-Pregnancies").textContent = "";
+  }
+  // Family History
+  const fam = document.getElementById("Family-history");
+  if (fam.value === "") {
+    document.getElementById("error-Family-history").textContent =
+      "Select Yes or No";
+    valid = false;
+  } else {
+    document.getElementById("error-Family-history").textContent = "";
+  }
+  // Physical Activity
+  const pa = document.getElementById("Physical-Activity");
+  if (pa.value === "") {
+    document.getElementById("error-Physical-Activity").textContent =
+      "Select activity";
+    valid = false;
+  } else {
+    document.getElementById("error-Physical-Activity").textContent = "";
+  }
+  // Smoking Status
+  const smoke = document.getElementById("Smoking-status");
+  if (smoke.value === "") {
+    document.getElementById("error-Smoking-status").textContent =
+      "Select status";
+    valid = false;
+  } else {
+    document.getElementById("error-Smoking-status").textContent = "";
+  }
+  // Alcohol Intake
+  const alcohol = document.getElementById("Alcohol-Intake");
+  if (alcohol.value === "" || alcohol.value < 0 || alcohol.value > 30) {
+    document.getElementById("error-Alcohol-Intake").textContent =
+      "0–30 drinks/week";
+    valid = false;
+  } else {
+    document.getElementById("error-Alcohol-Intake").textContent = "";
+  }
+  // Diet Quality
+  const diet = document.getElementById("Diet-Qualtiy");
+  if (diet.value === "" || diet.value < 0 || diet.value > 10) {
+    document.getElementById("error-Diet-Qualtiy").textContent =
+      "0–10 servings/day";
+    valid = false;
+  } else {
+    document.getElementById("error-Diet-Qualtiy").textContent = "";
+  }
+  // Cholesterol
+  const chol = document.getElementById("Cholesterol");
+  if (chol.value === "" || chol.value < 100 || chol.value > 400) {
+    document.getElementById("error-Cholesterol").textContent = "100–400 mg/dL";
+    valid = false;
+  } else {
+    document.getElementById("error-Cholesterol").textContent = "";
+  }
+  // Triglycerides
+  const trig = document.getElementById("Triglycerides");
+  if (trig.value === "" || trig.value < 50 || trig.value > 500) {
+    document.getElementById("error-Triglycerides").textContent = "50–500 mg/dL";
+    valid = false;
+  } else {
+    document.getElementById("error-Triglycerides").textContent = "";
+  }
+  // Waist Circumference
+  const waist = document.getElementById("Waiste-ratio");
+  if (waist.value === "" || waist.value < 60 || waist.value > 150) {
+    document.getElementById("error-Waiste-ratio").textContent = "60–150 cm";
+    valid = false;
+  } else {
+    document.getElementById("error-Waiste-ratio").textContent = "";
+  }
+  if (!valid) e.preventDefault();
+});
+// Simulate random input button logic
+// (Removed simulate-btn click handler to avoid conflict with dropdown)
+// Dropdown for simulate button (hover to show, closes on mouseleave/outside click)
+const simulateBtn = document.getElementById("simulate-btn");
+const dropdown = document.getElementById("simulate-dropdown");
+const simulateBtnWrapper = simulateBtn.parentElement;
+// Remove JS show/hide for dropdown, keep only click actions
+function fillFields(riskLevel) {
+  // Helper function to get random number within range
+  const getRandomInRange = (min, max, decimals = 0) => {
+    const num = Math.random() * (max - min) + min;
+    return decimals ? Number(num.toFixed(decimals)) : Math.floor(num);
+  };
+
+  let values = {};
+  
+  switch(riskLevel) {
+    case 'no':
+      values = {
+        Age: getRandomInRange(18, 35),
+        BMI: getRandomInRange(18.5, 24.9, 1),
+        'Blood Glucose': getRandomInRange(70, 99),
+        'Blood Pressure': getRandomInRange(90, 120),
+        'HbA1c': getRandomInRange(4.0, 5.6, 1),
+        'Insulin Level': getRandomInRange(5, 25),
+        'Skin thickness': getRandomInRange(10, 20),
+        Pregnancies: getRandomInRange(0, 2),
+        'Family history': "0",
+        'Physical Activity': "High",
+        'Smoking status': "Non-Smoker",
+        'Alcohol Intake': getRandomInRange(0, 7),
+        'Diet Qualtiy': getRandomInRange(7, 10),
+        Cholesterol: getRandomInRange(150, 200),
+        Triglycerides: getRandomInRange(50, 150),
+        'Waiste ratio': getRandomInRange(70, 90)
+      };
+      break;
+    
+    case 'low':
+      values = {
+        Age: getRandomInRange(25, 45),
+        BMI: getRandomInRange(24, 27, 1),
+        'Blood Glucose': getRandomInRange(100, 120),
+        'Blood Pressure': getRandomInRange(120, 130),
+        'HbA1c': getRandomInRange(5.7, 6.0, 1),
+        'Insulin Level': getRandomInRange(25, 50),
+        'Skin thickness': getRandomInRange(20, 30),
+        Pregnancies: getRandomInRange(0, 3),
+        'Family history': Math.random() > 0.7 ? "1" : "0",
+        'Physical Activity': "Medium",
+        'Smoking status': "Non-Smoker",
+        'Alcohol Intake': getRandomInRange(7, 14),
+        'Diet Qualtiy': getRandomInRange(5, 8),
+        Cholesterol: getRandomInRange(200, 240),
+        Triglycerides: getRandomInRange(150, 200),
+        'Waiste ratio': getRandomInRange(90, 100)
+      };
+      break;
+
+    case 'moderate':
+      values = {
+        Age: getRandomInRange(45, 60),
+        BMI: getRandomInRange(27, 32, 1),
+        'Blood Glucose': getRandomInRange(120, 160),
+        'Blood Pressure': getRandomInRange(130, 150),
+        'HbA1c': getRandomInRange(6.0, 6.4, 1),
+        'Insulin Level': getRandomInRange(50, 100),
+        'Skin thickness': getRandomInRange(30, 40),
+        Pregnancies: getRandomInRange(2, 5),
+        'Family history': Math.random() > 0.3 ? "1" : "0",
+        'Physical Activity': "Low",
+        'Smoking status': Math.random() > 0.5 ? "Smoker" : "Non-Smoker",
+        'Alcohol Intake': getRandomInRange(14, 21),
+        'Diet Qualtiy': getRandomInRange(3, 6),
+        Cholesterol: getRandomInRange(240, 300),
+        Triglycerides: getRandomInRange(200, 300),
+        'Waiste ratio': getRandomInRange(100, 120)
+      };
+      break;
+
+    case 'high':
+      values = {
+        Age: getRandomInRange(50, 80),
+        BMI: getRandomInRange(32, 45, 1),
+        'Blood Glucose': getRandomInRange(160, 250),
+        'Blood Pressure': getRandomInRange(150, 180),
+        'HbA1c': getRandomInRange(6.5, 9.0, 1),
+        'Insulin Level': getRandomInRange(100, 200),
+        'Skin thickness': getRandomInRange(40, 60),
+        Pregnancies: getRandomInRange(3, 8),
+        'Family history': "1",
+        'Physical Activity': "Low",
+        'Smoking status': "Smoker",
+        'Alcohol Intake': getRandomInRange(21, 30),
+        'Diet Qualtiy': getRandomInRange(0, 4),
+        Cholesterol: getRandomInRange(300, 400),
+        Triglycerides: getRandomInRange(300, 500),
+        'Waiste ratio': getRandomInRange(120, 150)
+      };
+      break;
+
+    default: // random
+      values = {
+        Age: getRandomInRange(18, 80),
+        BMI: getRandomInRange(18.5, 45, 1),
+        'Blood Glucose': getRandomInRange(70, 250),
+        'Blood Pressure': getRandomInRange(90, 180),
+        'HbA1c': getRandomInRange(4.0, 9.0, 1),
+        'Insulin Level': getRandomInRange(5, 200),
+        'Skin thickness': getRandomInRange(10, 60),
+        Pregnancies: getRandomInRange(0, 8),
+        'Family history': Math.random() > 0.5 ? "1" : "0",
+        'Physical Activity': ["Low", "Medium", "High"][Math.floor(Math.random() * 3)],
+        'Smoking status': Math.random() > 0.5 ? "Smoker" : "Non-Smoker",
+        'Alcohol Intake': getRandomInRange(0, 30),
+        'Diet Qualtiy': getRandomInRange(0, 10),
+        Cholesterol: getRandomInRange(150, 400),
+        Triglycerides: getRandomInRange(50, 500),
+        'Waiste ratio': getRandomInRange(70, 150)
+      };
+  }
+
+  // Fill in the form fields
+  Object.entries(values).forEach(([key, value]) => {
+    const element = document.querySelector(`input[name="${key}"]`) || document.getElementById(`${key.replace(/\s+/g, '-')}`);
+    if (element) element.value = value;
+  });
+}
+
+function scrollToPredict() {
+  var predictBtn = document.querySelector('form button[type="submit"]');
+  if (predictBtn) {
+    predictBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+    predictBtn.focus();
+  }
+}
+
+// Set up simulation button handlers
+document.getElementById("simulate-no-risk").onclick = () => {
+  fillFields('no');
+  scrollToPredict();
+};
+document.getElementById("simulate-low-risk").onclick = () => {
+  fillFields('low');
+  scrollToPredict();
+};
+document.getElementById("simulate-moderate-risk").onclick = () => {
+  fillFields('moderate');
+  scrollToPredict();
+};
+document.getElementById("simulate-high-risk").onclick = () => {
+  fillFields('high');
+  scrollToPredict();
+};
+document.getElementById("simulate-random").onclick = () => {
+  fillFields('random');
+  scrollToPredict();
+};
+// CSS fix for dropdown z-index and overflow
+const style = document.createElement("style");
+style.innerHTML = `
+        #simulate-dropdown { z-index: 9999 !important; }
+        .header-main, .header-actions { overflow: visible !important; }
+      `;
+document.head.appendChild(style);
+
+    // Mobile menu functionality
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const simulateBtnMobile = document.getElementById('simulate-btn-mobile');
+    const simulateDropdownMobile = document.getElementById('simulate-dropdown-wrapper-mobile');
+
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('show');
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+          mobileMenu.classList.remove('show');
+          if (simulateDropdownMobile) {
+            simulateDropdownMobile.classList.remove('open');
+          }
+        }
+      });
+
+      // Handle mobile simulate button
+      if (simulateBtnMobile && simulateDropdownMobile) {
+        simulateBtnMobile.addEventListener('click', (e) => {
+          e.stopPropagation();
+          simulateDropdownMobile.classList.toggle('open');
+        });
+      }
+
+      // Add the same simulation handlers to mobile buttons
+      document.getElementById("simulate-all-mobile")?.addEventListener('click', () => {
+        fillFields('random');
+        scrollToPredict();
+        mobileMenu.classList.remove('show');
+        simulateDropdownMobile.classList.remove('open');
+      });
+    }
+  </script>
   </body>
 </html>

@@ -170,11 +170,27 @@ button#clear-result-btn {
   font-weight: bold;
 }
 
-/* Brain styling */
-.brain-icon {
+/* Health styling */
+.health-icon {
   text-align: center;
   margin: 20px 0;
-  color: #888;
+}
+
+.health-icon svg {
+  width: 60px;
+  height: 60px;
+}
+
+.health-icon.high-risk svg {
+  color: #dc3545; /* Red for high risk */
+}
+
+.health-icon.medium-risk svg {
+  color: #fd7e14; /* Orange for medium risk */
+}
+
+.health-icon.low-risk svg {
+  color: #198754; /* Green for low risk */
 }
 
 .instruction-text {
@@ -231,6 +247,11 @@ button#clear-result-btn {
 .simulate-btn:hover {
   background: #ffffff57;
 }
+
+.simulate-option {
+  background-color: white;
+}
+
 .about-btn {
   background: #111;
   color: #fff;
@@ -282,29 +303,68 @@ button#clear-result-btn {
     width: 100%;
   }
   .header-actions {
-    display: none;
+    display: none !important;
   }
   .menu-btn {
-    display: flex;
+    display: flex !important;
     justify-self: end;
+    margin: 0;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+  }
+  .menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
   }
   .mobile-menu {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 10px;
     position: absolute;
-    top: 60px;
-    right: 20px;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 16px 20px;
+    padding: 8px;
     z-index: 1000;
+    margin: 0 20px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
   }
-  .mobile-menu .about-btn,
+  .mobile-menu.show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
   .mobile-menu .simulate-btn {
     width: 100%;
     justify-content: flex-start;
+    margin: 0;
+    border: none;
+    background: none;
+    padding: 12px;
+    border-radius: 8px;
+  }
+  .mobile-menu .simulate-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  .mobile-menu .about-btn {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 0;
+  }
+  .mobile-menu #simulate-dropdown-mobile {
+    position: static !important;
+    width: 100% !important;
+    box-shadow: none;
+    border: 1px solid #eee;
+    margin: 4px 0;
+  }
+  .simulate-dropdown-wrapper-mobile.open #simulate-dropdown-mobile {
+    display: block;
   }
 
   .two-column {
