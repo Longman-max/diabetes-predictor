@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home | Diabetes Predictor</title>
     <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/dark-mode.css" />
     <link
       rel="shortcut icon"
       href="../static/images/logo.jpeg"
@@ -15,60 +16,6 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
     />
     <style>
-      /* Fix for simulate dropdown always showing on hover/focus */
-      .simulate-dropdown-wrapper {
-        position: relative;
-        display: inline-block;
-      }
-      #simulate-dropdown {
-        display: none;
-        position: absolute;
-        left: 0;
-        top: 100%;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        z-index: 9999;
-        min-width: 160px;
-        margin: 0;
-        /* padding: 5px; */
-      }
-      .simulate-dropdown-wrapper:hover #simulate-dropdown,
-      .simulate-dropdown-wrapper:focus-within #simulate-dropdown {
-        display: block !important;
-      }
-      /* Style simulate menu options like the About button */
-      .simulate-option {
-        margin: 0;
-        font-weight: 600;
-        font-size: 15px;
-        color: #111 !important;
-        border: none;
-        width: 100%;
-        text-align: left;
-        padding: 10px 16px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.15s;
-        border-radius: 0px !important;
-      }
-
-      .simulate-option:hover,
-      .simulate-option:focus {
-        background: #222 !important;
-        color: #fff !important;
-      }
-
-      .simulate-option:first-child {
-        border-top-left-radius: 8px !important;
-        border-top-right-radius: 8px !important;
-      }
-      .simulate-option:second-child {
-        border-bottom-left-radius: 8px !important;
-        border-bottom-right-radius: 8px !important;
-      }
-
       /* Responsive menu bar for mobile */
       @media (max-width: 600px) {
         .header-actions {
@@ -115,6 +62,9 @@
         }
       }
     </style>
+    <script>
+      alert("App is still under development. Some features may not work as expected.");
+    </script>
   </head>
   <body>
     <header>
@@ -126,46 +76,24 @@
           <h1 style="margin: 0">Precious Kings</h1>
         </div>
         <div class="header-actions" id="header-actions">
-          <div class="simulate-dropdown-wrapper">
-            <button
-              type="button"
-              id="simulate-btn"
-              class="simulate-btn"
-              aria-haspopup="true"
-              aria-expanded="false"
-              style="
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                cursor: pointer;
-              "
-            >
-              <span style="color: #111">Simulate</span>
-
-              <span
-                class="material-symbols-outlined"
-                style="font-size: 24px; color: #111; vertical-align: middle"
-                >arrow_drop_down</span
-              >
-            </button>
-            <div id="simulate-dropdown">
-              <button type="button" class="simulate-option" id="simulate-no-risk">
-                Simulate No Risk
-              </button>
-              <button type="button" class="simulate-option" id="simulate-low-risk">
-                Simulate Low Risk
-              </button>
-              <button type="button" class="simulate-option" id="simulate-moderate-risk">
-                Simulate Moderate Risk
-              </button>
-              <button type="button" class="simulate-option" id="simulate-high-risk">
-                Simulate High Risk
-              </button>
-              <button type="button" class="simulate-option" id="simulate-random">
-                Simulate Random
-              </button>
-            </div>
-          </div>
+          <button
+            type="button"
+            id="simulate-btn"
+            class="simulate-btn"
+            style="display: flex; align-items: center; gap: 6px; cursor: pointer;"
+          >
+            <span style="color: #111">Simulate</span>
+            <span class="material-symbols-outlined" style="font-size: 24px; color: #111;">casino</span>
+          </button>
+          <button
+            type="button"
+            id="theme-toggle"
+            class="theme-btn"
+            aria-label="Toggle dark mode"
+            style="display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 8px; border-radius: 8px;"
+          >
+            <span class="material-symbols-outlined" style="font-size: 24px; color: #111;">dark_mode</span>
+          </button>
           <a href="/about" class="about-btn">About</a>
         </div>
         <div
@@ -180,71 +108,25 @@
             overflow: hidden;
           "
         >
-          <div
-            class="simulate-dropdown-wrapper-mobile"
-            id="simulate-dropdown-wrapper-mobile"
-            style="width: 100%; position: relative"
+          <button
+            type="button"
+            id="simulate-btn-mobile"
+            class="simulate-btn"
+            style="
+              width: 100%;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              cursor: pointer;
+            "
           >
-            <button
-              type="button"
-              id="simulate-btn-mobile"
-              class="simulate-btn"
-              aria-expanded="false"
-              aria-haspopup="true"
-              style="
-                width: 100%;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                cursor: pointer;
-              "
+            <span style="color: #111">Simulate</span>
+            <span
+              class="material-symbols-outlined"
+              style="font-size: 28px; color: #111; line-height: 1"
+              >casino</span
             >
-              <span style="color: #111">Simulate</span>
-              <span
-                class="material-symbols-outlined"
-                style="font-size: 28px; color: #111; line-height: 1"
-                >casino</span
-              >
-              <span
-                class="material-symbols-outlined"
-                style="font-size: 24px; color: #111; vertical-align: middle"
-                >arrow_drop_down</span
-              >
-            </button>
-            <div
-              id="simulate-dropdown-mobile"
-              style="
-                /* position: absolute; */
-                /* left: 0; */
-                /* top: 100%; */
-                background: #fff;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                z-index: 1;
-                min-width: 160px;
-                width: 100%;
-                margin: 0;
-              "
-            >
-              <button
-                type="button"
-                class="simulate-option"
-                id="simulate-all-mobile"
-                style="
-                  width: 100%;
-                  text-align: left;
-                  padding: 10px 16px;
-                  background: none;
-                  border: none;
-                  cursor: pointer;
-                  color: #111;
-                "
-              >
-                Simulate All
-              </button>
-            </div>
-          </div>
+          </button>
           <a
             href="/about"
             class="about-btn"
@@ -635,107 +517,102 @@ function fillFields(riskLevel) {
   switch(riskLevel) {
     case 'no':
       values = {
-        Age: getRandomInRange(18, 35),
+        Age: getRandomInRange(18, 30),
         BMI: getRandomInRange(18.5, 24.9, 1),
-        'Blood Glucose': getRandomInRange(70, 99),
-        'Blood Pressure': getRandomInRange(90, 120),
-        'HbA1c': getRandomInRange(4.0, 5.6, 1),
-        'Insulin Level': getRandomInRange(5, 25),
-        'Skin thickness': getRandomInRange(10, 20),
-        Pregnancies: getRandomInRange(0, 2),
+        'Blood Glucose': getRandomInRange(70, 99), // Normal range
+        'Blood Pressure': getRandomInRange(80, 120), // Normal range
+        'HbA1c': getRandomInRange(4.0, 5.6, 1), // Normal range
+        'Insulin Level': getRandomInRange(2, 100), // Normal range
+        'Skin thickness': getRandomInRange(7, 30),
+        Pregnancies: getRandomInRange(0, 1),
         'Family history': "0",
         'Physical Activity': "High",
         'Smoking status': "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(0, 7),
+        'Alcohol Intake': getRandomInRange(0, 5),
         'Diet Qualtiy': getRandomInRange(7, 10),
-        Cholesterol: getRandomInRange(150, 200),
-        Triglycerides: getRandomInRange(50, 150),
-        'Waiste ratio': getRandomInRange(70, 90)
+        Cholesterol: getRandomInRange(100, 150),
+        Triglycerides: getRandomInRange(80, 150),
+        // 'Waiste ratio': getRandomInRange(60, 80), // In cm
+        'Waist ratio': getRandomInRange(60, 80) // Try both spellings to ensure it works
       };
       break;
     
     case 'low':
       values = {
         Age: getRandomInRange(25, 45),
-        BMI: getRandomInRange(24, 27, 1),
-        'Blood Glucose': getRandomInRange(100, 120),
-        'Blood Pressure': getRandomInRange(120, 130),
-        'HbA1c': getRandomInRange(5.7, 6.0, 1),
-        'Insulin Level': getRandomInRange(25, 50),
-        'Skin thickness': getRandomInRange(20, 30),
-        Pregnancies: getRandomInRange(0, 3),
+        BMI: getRandomInRange(25, 29.9, 1),
+        'Blood Glucose': getRandomInRange(100, 125), // Prediabetes range
+        'Blood Pressure': getRandomInRange(70, 85),
+        'HbA1c': getRandomInRange(5.7, 6.0, 1), // Prediabetes range
+        'Insulin Level': getRandomInRange(120, 140),
+        'Skin thickness': getRandomInRange(25, 35),
+        Pregnancies: getRandomInRange(0, 2),
         'Family history': Math.random() > 0.7 ? "1" : "0",
         'Physical Activity': "Medium",
         'Smoking status': "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(7, 14),
-        'Diet Qualtiy': getRandomInRange(5, 8),
-        Cholesterol: getRandomInRange(200, 240),
+        'Alcohol Intake': getRandomInRange(5, 10),
+        'Diet Qualtiy': getRandomInRange(5, 7),
+        Cholesterol: getRandomInRange(150, 200),
         Triglycerides: getRandomInRange(150, 200),
-        'Waiste ratio': getRandomInRange(90, 100)
+        'Waiste ratio': getRandomInRange(0.9, 1.0)
       };
       break;
 
     case 'moderate':
       values = {
         Age: getRandomInRange(45, 60),
-        BMI: getRandomInRange(27, 32, 1),
-        'Blood Glucose': getRandomInRange(120, 160),
-        'Blood Pressure': getRandomInRange(130, 150),
-        'HbA1c': getRandomInRange(6.0, 6.4, 1),
-        'Insulin Level': getRandomInRange(50, 100),
-        'Skin thickness': getRandomInRange(30, 40),
-        Pregnancies: getRandomInRange(2, 5),
-        'Family history': Math.random() > 0.3 ? "1" : "0",
+        BMI: getRandomInRange(30, 35, 1),
+        'Blood Glucose': getRandomInRange(126, 150), // Diabetic range
+        'Blood Pressure': getRandomInRange(130, 160),
+        'HbA1c': getRandomInRange(6.1, 6.9, 1),
+        'Insulin Level': getRandomInRange(150, 200),
+        'Skin thickness': getRandomInRange(40, 70),
+        Pregnancies: getRandomInRange(1, 3),
+        'Family history': "1",
         'Physical Activity': "Low",
         'Smoking status': Math.random() > 0.5 ? "Smoker" : "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(14, 21),
-        'Diet Qualtiy': getRandomInRange(3, 6),
-        Cholesterol: getRandomInRange(240, 300),
-        Triglycerides: getRandomInRange(200, 300),
-        'Waiste ratio': getRandomInRange(100, 120)
+        'Alcohol Intake': getRandomInRange(10, 20),
+        'Diet Qualtiy': getRandomInRange(3, 5),
+        Cholesterol: getRandomInRange(200, 250),
+        Triglycerides: getRandomInRange(200, 250),
+        'Waiste ratio': getRandomInRange(100, 120) // In cm
       };
       break;
 
     case 'high':
       values = {
         Age: getRandomInRange(50, 80),
-        BMI: getRandomInRange(32, 45, 1),
-        'Blood Glucose': getRandomInRange(160, 250),
-        'Blood Pressure': getRandomInRange(150, 180),
-        'HbA1c': getRandomInRange(6.5, 9.0, 1),
-        'Insulin Level': getRandomInRange(100, 200),
-        'Skin thickness': getRandomInRange(40, 60),
-        Pregnancies: getRandomInRange(3, 8),
+        BMI: getRandomInRange(35, 40, 1),
+        'Blood Glucose': getRandomInRange(150, 200), // High diabetic range
+        'Blood Pressure': getRandomInRange(160, 200),
+        'HbA1c': getRandomInRange(7.0, 12.0, 1), // High diabetic range
+        'Insulin Level': getRandomInRange(200, 300),
+        'Skin thickness': getRandomInRange(70, 100),
+        Pregnancies: getRandomInRange(2, 5),
         'Family history': "1",
         'Physical Activity': "Low",
         'Smoking status': "Smoker",
-        'Alcohol Intake': getRandomInRange(21, 30),
-        'Diet Qualtiy': getRandomInRange(0, 4),
-        Cholesterol: getRandomInRange(300, 400),
-        Triglycerides: getRandomInRange(300, 500),
-        'Waiste ratio': getRandomInRange(120, 150)
+        'Alcohol Intake': getRandomInRange(20, 30),
+        'Diet Qualtiy': getRandomInRange(0, 3),
+        Cholesterol: getRandomInRange(250, 300),
+        Triglycerides: getRandomInRange(250, 300),
+        'Waiste ratio': getRandomInRange(120, 150) // Match exact field name from form
       };
       break;
 
-    default: // random
-      values = {
-        Age: getRandomInRange(18, 80),
-        BMI: getRandomInRange(18.5, 45, 1),
-        'Blood Glucose': getRandomInRange(70, 250),
-        'Blood Pressure': getRandomInRange(90, 180),
-        'HbA1c': getRandomInRange(4.0, 9.0, 1),
-        'Insulin Level': getRandomInRange(5, 200),
-        'Skin thickness': getRandomInRange(10, 60),
-        Pregnancies: getRandomInRange(0, 8),
-        'Family history': Math.random() > 0.5 ? "1" : "0",
-        'Physical Activity': ["Low", "Medium", "High"][Math.floor(Math.random() * 3)],
-        'Smoking status': Math.random() > 0.5 ? "Smoker" : "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(0, 30),
-        'Diet Qualtiy': getRandomInRange(0, 10),
-        Cholesterol: getRandomInRange(150, 400),
-        Triglycerides: getRandomInRange(50, 500),
-        'Waiste ratio': getRandomInRange(70, 150)
-      };
+    default: // random - keeps full range but weighted towards middle
+      const weights = [0.1, 0.25, 0.3, 0.25, 0.1]; // weights for different ranges
+      const rand = Math.random();
+      let range;
+      
+      if (rand < weights[0]) range = 'no';
+      else if (rand < weights[0] + weights[1]) range = 'low';
+      else if (rand < weights[0] + weights[1] + weights[2]) range = 'moderate';
+      else if (rand < weights[0] + weights[1] + weights[2] + weights[3]) range = 'high';
+      else range = 'very_high';
+      
+      // Recursively call with selected range
+      return fillFields(range === 'very_high' ? 'high' : range);
   }
 
   // Fill in the form fields
@@ -754,25 +631,14 @@ function scrollToPredict() {
 }
 
 // Set up simulation button handlers
-document.getElementById("simulate-no-risk").onclick = () => {
-  fillFields('no');
-  scrollToPredict();
-};
-document.getElementById("simulate-low-risk").onclick = () => {
-  fillFields('low');
-  scrollToPredict();
-};
-document.getElementById("simulate-moderate-risk").onclick = () => {
-  fillFields('moderate');
-  scrollToPredict();
-};
-document.getElementById("simulate-high-risk").onclick = () => {
-  fillFields('high');
-  scrollToPredict();
-};
-document.getElementById("simulate-random").onclick = () => {
+document.getElementById("simulate-btn").onclick = () => {
   fillFields('random');
   scrollToPredict();
+};
+document.getElementById("simulate-btn-mobile").onclick = () => {
+  fillFields('random');
+  scrollToPredict();
+  document.getElementById('mobile-menu').classList.remove('show');
 };
 // CSS fix for dropdown z-index and overflow
 const style = document.createElement("style");
@@ -780,13 +646,9 @@ style.innerHTML = `
         #simulate-dropdown { z-index: 9999 !important; }
         .header-main, .header-actions { overflow: visible !important; }
       `;
-document.head.appendChild(style);
-
-    // Mobile menu functionality
+document.head.appendChild(style);      // Mobile menu functionality
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    const simulateBtnMobile = document.getElementById('simulate-btn-mobile');
-    const simulateDropdownMobile = document.getElementById('simulate-dropdown-wrapper-mobile');
 
     if (menuBtn && mobileMenu) {
       menuBtn.addEventListener('click', () => {
@@ -797,28 +659,10 @@ document.head.appendChild(style);
       document.addEventListener('click', (e) => {
         if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
           mobileMenu.classList.remove('show');
-          if (simulateDropdownMobile) {
-            simulateDropdownMobile.classList.remove('open');
-          }
         }
-      });
-
-      // Handle mobile simulate button
-      if (simulateBtnMobile && simulateDropdownMobile) {
-        simulateBtnMobile.addEventListener('click', (e) => {
-          e.stopPropagation();
-          simulateDropdownMobile.classList.toggle('open');
-        });
-      }
-
-      // Add the same simulation handlers to mobile buttons
-      document.getElementById("simulate-all-mobile")?.addEventListener('click', () => {
-        fillFields('random');
-        scrollToPredict();
-        mobileMenu.classList.remove('show');
-        simulateDropdownMobile.classList.remove('open');
       });
     }
   </script>
+    <script src="../static/js/theme.js"></script>
   </body>
 </html>

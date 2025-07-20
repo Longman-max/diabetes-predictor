@@ -10,8 +10,8 @@ html {
 
 body {
   font-family: "Segoe UI", sans-serif;
-  /* background-color: #f2f4f8; */
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  /* background-color: rgba(171, 214, 255, 0.164); */
 
   padding: 20px;
   color: #333;

@@ -31,23 +31,32 @@ except Exception as e:
 
 def classify_risk(prob, features):
     """Classify risk based on probability and feature values"""
-    # Base risk on probability
-    base_risk = 'Low' if prob < 0.3 else 'Moderate' if prob < 0.6 else 'High'
+    # Check for definite high risk indicators first
+    if (features.get('Blood Glucose', 0) >= 126 or  # Diabetes threshold
+        features.get('HbA1c', 0) >= 6.5):          # Diabetes threshold
+        return 'High'
     
-    # Additional risk factors that could elevate the risk level
+    # Count risk factors
     risk_factors = 0
     
-    # Check key indicators
-    if features.get('Blood Glucose', 0) > 140:  # High blood glucose
-        risk_factors += 1
-    if features.get('HbA1c', 0) > 6.0:  # Elevated HbA1c
+    # Check key indicators with clinical thresholds
+    if features.get('Blood Glucose', 0) >= 100:  # Prediabetes threshold
         risk_factors += 2
-    if features.get('BMI', 0) > 30:  # Obese
+    if features.get('HbA1c', 0) >= 5.7:         # Prediabetes threshold
+        risk_factors += 2
+    if features.get('BMI', 0) >= 30:            # Obesity threshold
         risk_factors += 1
-    if features.get('Family history') == '1':  # Family history
+    if features.get('Family history') == '1':    # Family history
         risk_factors += 1
-    if features.get('Blood Pressure', 0) > 140:  # High blood pressure
+    if features.get('Blood Pressure', 0) >= 140: # Hypertension threshold
         risk_factors += 1
+    
+    # Determine risk level based on both probability and risk factors
+    if prob >= 0.5 or risk_factors >= 4:
+        return 'High'
+    elif prob >= 0.3 or risk_factors >= 2:
+        return 'Moderate'
+    return 'Low'
     
     # Adjust risk level based on risk factors
     if risk_factors >= 3:
@@ -106,19 +115,27 @@ def predict():
         # Format probability as percentage
         prob_percentage = f"{prob * 100:.1f}%"
         
-        # Build detailed result message
+        # Build detailed result message based on probability and prediction
+        if prob >= 0.7:  # High probability
+            result = f"High Risk of Diabetes (Probability: {prob_percentage})"
+        elif prob >= 0.5:  # Moderate to high probability
+            result = f"High Risk of Diabetes (Probability: {prob_percentage})"
+        elif prob >= 0.3:  # Moderate probability
+            result = f"Moderate Risk of Diabetes (Probability: {prob_percentage})"
+        else:  # Low probability
+            result = f"Low Risk of Diabetes (Probability: {prob_percentage})"
+
+        # Add risk factor assessment for more context
         if prediction == 1:
-            if risk_level == 'High':
-                result = f"High Risk of Diabetes (Probability: {prob_percentage})"
-            else:
-                result = f"Potential Diabetes ({risk_level} Risk, Probability: {prob_percentage})"
-        else:
-            if risk_level == 'High':
-                result = f"Pre-diabetic Indicators (High Risk, Probability: {prob_percentage})"
-            elif risk_level == 'Moderate':
-                result = f"Pre-diabetic Indicators (Moderate Risk, Probability: {prob_percentage})"
-            else:
-                result = f"Low Risk of Diabetes (Probability: {prob_percentage})"
+            # Check for critical indicators
+            critical_factors = []
+            if float(input_dict.get('Blood Glucose', 0)) > 125:
+                critical_factors.append("elevated blood glucose")
+            if float(input_dict.get('HbA1c', 0)) > 6.5:
+                critical_factors.append("high HbA1c")
+            if critical_factors:
+                factors_text = " and ".join(critical_factors)
+                result += f" - Critical indicators: {factors_text}"
 
     except Exception as e:
         result = f'Prediction error: {e}'
