@@ -128,6 +128,11 @@ button#clear-result-btn {
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center vertically */
+  min-height: 220px; /* Ensures enough height for vertical centering */
 }
 
 .prediction-box h3 {
@@ -170,15 +175,38 @@ button#clear-result-btn {
   font-weight: bold;
 }
 
+.advice {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #1976d2;
+  text-align: center;
+  font-weight: 500;
+}
+}
+
 /* Health styling */
 .health-icon {
-  text-align: center;
-  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 50%;
+  background: var(--icon-bg, #e0e0e0);
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+  transition: background 0.3s;
+  flex-shrink: 0;
 }
 
 .health-icon svg {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: auto;
+  align-self: center;
+  justify-self: center;
 }
 
 .health-icon.high-risk svg {

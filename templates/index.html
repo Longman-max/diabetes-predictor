@@ -62,9 +62,9 @@
         }
       }
     </style>
-    <script>
+    <!-- <script>
       alert("App is still under development. Some features may not work as expected.");
-    </script>
+    </script> -->
   </head>
   <body>
     <header>
@@ -361,7 +361,7 @@
       document.getElementById("progress-bar-span").style.width = "0%";
       document.getElementById("progress-bar-span").style.animation = "";
       document.getElementById("result-text").textContent = "No prediction yet";
-      updateHealthIcon("none"); // Reset icon
+      // updateHealthIcon("none"); // Reset icon
     });
   }
 
@@ -512,113 +512,62 @@ function fillFields(riskLevel) {
     return decimals ? Number(num.toFixed(decimals)) : Math.floor(num);
   };
 
-  let values = {};
-  
-  switch(riskLevel) {
-    case 'no':
-      values = {
-        Age: getRandomInRange(18, 30),
-        BMI: getRandomInRange(18.5, 24.9, 1),
-        'Blood Glucose': getRandomInRange(70, 99), // Normal range
-        'Blood Pressure': getRandomInRange(80, 120), // Normal range
-        'HbA1c': getRandomInRange(4.0, 5.6, 1), // Normal range
-        'Insulin Level': getRandomInRange(2, 100), // Normal range
-        'Skin thickness': getRandomInRange(7, 30),
-        Pregnancies: getRandomInRange(0, 1),
-        'Family history': "0",
-        'Physical Activity': "High",
-        'Smoking status': "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(0, 5),
-        'Diet Qualtiy': getRandomInRange(7, 10),
-        Cholesterol: getRandomInRange(100, 150),
-        Triglycerides: getRandomInRange(80, 150),
-        // 'Waiste ratio': getRandomInRange(60, 80), // In cm
-        'Waist ratio': getRandomInRange(60, 80) // Try both spellings to ensure it works
-      };
-      break;
-    
-    case 'low':
-      values = {
-        Age: getRandomInRange(25, 45),
-        BMI: getRandomInRange(25, 29.9, 1),
-        'Blood Glucose': getRandomInRange(100, 125), // Prediabetes range
-        'Blood Pressure': getRandomInRange(70, 85),
-        'HbA1c': getRandomInRange(5.7, 6.0, 1), // Prediabetes range
-        'Insulin Level': getRandomInRange(120, 140),
-        'Skin thickness': getRandomInRange(25, 35),
-        Pregnancies: getRandomInRange(0, 2),
-        'Family history': Math.random() > 0.7 ? "1" : "0",
-        'Physical Activity': "Medium",
-        'Smoking status': "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(5, 10),
-        'Diet Qualtiy': getRandomInRange(5, 7),
-        Cholesterol: getRandomInRange(150, 200),
-        Triglycerides: getRandomInRange(150, 200),
-        'Waiste ratio': getRandomInRange(0.9, 1.0)
-      };
-      break;
+  // Clinical reference ranges for all fields
+  let ranges = {
+    Age: [18, 80],
+    BMI: [18.5, 40, 1],
+    'Blood Glucose': [70, 200],
+    'Blood Pressure': [80, 180],
+    'HbA1c': [4.0, 12.0, 1],
+    'Insulin Level': [2, 300],
+    'Skin thickness': [7, 99],
+    Pregnancies: [0, 17],
+    'Family history': [0, 1],
+    'Physical Activity': ["Low", "Medium", "High"],
+    'Smoking status': ["Smoker", "Non-Smoker"],
+    'Alcohol Intake': [0, 30],
+    'Diet Qualtiy': [0, 10],
+    Cholesterol: [100, 400],
+    Triglycerides: [50, 500],
+    'Waiste ratio': [60, 150]
+  };
 
-    case 'moderate':
-      values = {
-        Age: getRandomInRange(45, 60),
-        BMI: getRandomInRange(30, 35, 1),
-        'Blood Glucose': getRandomInRange(126, 150), // Diabetic range
-        'Blood Pressure': getRandomInRange(130, 160),
-        'HbA1c': getRandomInRange(6.1, 6.9, 1),
-        'Insulin Level': getRandomInRange(150, 200),
-        'Skin thickness': getRandomInRange(40, 70),
-        Pregnancies: getRandomInRange(1, 3),
-        'Family history': "1",
-        'Physical Activity': "Low",
-        'Smoking status': Math.random() > 0.5 ? "Smoker" : "Non-Smoker",
-        'Alcohol Intake': getRandomInRange(10, 20),
-        'Diet Qualtiy': getRandomInRange(3, 5),
-        Cholesterol: getRandomInRange(200, 250),
-        Triglycerides: getRandomInRange(200, 250),
-        'Waiste ratio': getRandomInRange(100, 120) // In cm
-      };
-      break;
-
-    case 'high':
-      values = {
-        Age: getRandomInRange(50, 80),
-        BMI: getRandomInRange(35, 40, 1),
-        'Blood Glucose': getRandomInRange(150, 200), // High diabetic range
-        'Blood Pressure': getRandomInRange(160, 200),
-        'HbA1c': getRandomInRange(7.0, 12.0, 1), // High diabetic range
-        'Insulin Level': getRandomInRange(200, 300),
-        'Skin thickness': getRandomInRange(70, 100),
-        Pregnancies: getRandomInRange(2, 5),
-        'Family history': "1",
-        'Physical Activity': "Low",
-        'Smoking status': "Smoker",
-        'Alcohol Intake': getRandomInRange(20, 30),
-        'Diet Qualtiy': getRandomInRange(0, 3),
-        Cholesterol: getRandomInRange(250, 300),
-        Triglycerides: getRandomInRange(250, 300),
-        'Waiste ratio': getRandomInRange(120, 150) // Match exact field name from form
-      };
-      break;
-
-    default: // random - keeps full range but weighted towards middle
-      const weights = [0.1, 0.25, 0.3, 0.25, 0.1]; // weights for different ranges
-      const rand = Math.random();
-      let range;
-      
-      if (rand < weights[0]) range = 'no';
-      else if (rand < weights[0] + weights[1]) range = 'low';
-      else if (rand < weights[0] + weights[1] + weights[2]) range = 'moderate';
-      else if (rand < weights[0] + weights[1] + weights[2] + weights[3]) range = 'high';
-      else range = 'very_high';
-      
-      // Recursively call with selected range
-      return fillFields(range === 'very_high' ? 'high' : range);
-  }
+  let values = {
+    Age: getRandomInRange(...ranges.Age),
+    BMI: getRandomInRange(...ranges.BMI),
+    'Blood Glucose': getRandomInRange(...ranges['Blood Glucose']),
+    'Blood Pressure': getRandomInRange(...ranges['Blood Pressure']),
+    'HbA1c': getRandomInRange(...ranges['HbA1c']),
+    'Insulin Level': getRandomInRange(...ranges['Insulin Level']),
+    'Skin thickness': getRandomInRange(...ranges['Skin thickness']),
+    Pregnancies: getRandomInRange(...ranges.Pregnancies),
+    'Family history': String(getRandomInRange(...ranges['Family history'])),
+    'Physical Activity': ranges['Physical Activity'][getRandomInRange(0, 2)],
+    'Smoking status': ranges['Smoking status'][getRandomInRange(0, 1)],
+    'Alcohol Intake': getRandomInRange(...ranges['Alcohol Intake']),
+    'Diet Qualtiy': getRandomInRange(...ranges['Diet Qualtiy']),
+    Cholesterol: getRandomInRange(...ranges.Cholesterol),
+    Triglycerides: getRandomInRange(...ranges.Triglycerides),
+    'Waiste ratio': getRandomInRange(...ranges['Waiste ratio'])
+  };
 
   // Fill in the form fields
   Object.entries(values).forEach(([key, value]) => {
     const element = document.querySelector(`input[name="${key}"]`) || document.getElementById(`${key.replace(/\s+/g, '-')}`);
     if (element) element.value = value;
+    // For select fields
+    if (key === 'Family history') {
+      const select = document.getElementById('Family-history');
+      if (select) select.value = value;
+    }
+    if (key === 'Physical Activity') {
+      const select = document.getElementById('Physical-Activity');
+      if (select) select.value = value;
+    }
+    if (key === 'Smoking status') {
+      const select = document.getElementById('Smoking-status');
+      if (select) select.value = value;
+    }
   });
 }
 

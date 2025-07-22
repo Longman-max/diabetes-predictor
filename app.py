@@ -18,11 +18,11 @@ app.secret_key = 'your_secret_key_here'
 # Load model, scaler, and columns
 try:
     print("Loading model files...")
-    with open('diabetes_rf_model.pkl', 'rb') as f:
+    with open('models/diabetes_rf_model.pkl', 'rb') as f:
         model = pickle.load(f)
-    with open('scaler.pkl', 'rb') as f:
+    with open('models/scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
-    with open('columns.pkl', 'rb') as f:
+    with open('models/columns.pkl', 'rb') as f:
         columns = pickle.load(f)
     print("Model files loaded successfully")
 except Exception as e:
@@ -30,47 +30,43 @@ except Exception as e:
     raise
 
 def classify_risk(prob, features):
-    """Classify risk based on probability and feature values"""
-    # Check for definite high risk indicators first
-    if (features.get('Blood Glucose', 0) >= 126 or  # Diabetes threshold
-        features.get('HbA1c', 0) >= 6.5):          # Diabetes threshold
-        return 'High'
-    
+    """Classify risk based on probability and feature values, using clinical guidelines"""
+    # Definite diabetes: clinical diagnosis
+    if (features.get('Blood Glucose', 0) >= 126 or features.get('HbA1c', 0) >= 6.5):
+        return f"High Risk ({prob*100:.1f}%)"
+
     # Count risk factors
     risk_factors = 0
-    
-    # Check key indicators with clinical thresholds
     if features.get('Blood Glucose', 0) >= 100:  # Prediabetes threshold
         risk_factors += 2
-    if features.get('HbA1c', 0) >= 5.7:         # Prediabetes threshold
+    if features.get('HbA1c', 0) >= 5.7:
         risk_factors += 2
-    if features.get('BMI', 0) >= 30:            # Obesity threshold
+    if features.get('BMI', 0) >= 30:
         risk_factors += 1
-    if features.get('Family history') == '1':    # Family history
+    if features.get('Family history') == '1':
         risk_factors += 1
-    if features.get('Blood Pressure', 0) >= 140: # Hypertension threshold
+    if features.get('Blood Pressure', 0) >= 140:
         risk_factors += 1
-    
-    # Determine risk level based on both probability and risk factors
-    if prob >= 0.5 or risk_factors >= 4:
-        return 'High'
+
+    # Model-based thresholds (adjust as needed)
+    if prob >= 0.7 or risk_factors >= 4:
+        return f"High Risk ({prob*100:.1f}%)"
     elif prob >= 0.3 or risk_factors >= 2:
-        return 'Moderate'
-    return 'Low'
-    
-    # Adjust risk level based on risk factors
-    if risk_factors >= 3:
-        return 'High'
-    elif risk_factors >= 2:
-        return 'Moderate' if base_risk == 'Low' else 'High'
-    elif risk_factors >= 1:
-        return 'Moderate' if base_risk == 'Low' else base_risk
-        
-    return base_risk
+        return f"Medium Risk ({prob*100:.1f}%)"
+    else:
+        return f"No Risk ({prob*100:.1f}%)"
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    # Pass previous form values if available
+    prev_values = None
+    if 'prev_values' in request.args:
+        import json
+        try:
+            prev_values = json.loads(request.args['prev_values'])
+        except Exception:
+            prev_values = None
+    return render_template('index.html', prev_values=prev_values)
 
 @app.route('/about')
 def about():
@@ -78,6 +74,8 @@ def about():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+
+    import json
     try:
         # Gather input from form fields
         input_dict = {col: request.form.get(col, '') for col in [
@@ -87,7 +85,10 @@ def predict():
             'Cholesterol', 'Triglycerides', 'Waiste ratio'
         ]}
 
-        # Convert numeric features
+        # Save original values for repopulation
+        prev_values = input_dict.copy()
+
+        # Convert numeric features for prediction
         for key in input_dict:
             try:
                 input_dict[key] = float(input_dict[key])
@@ -111,38 +112,25 @@ def predict():
         prediction = model.predict(X_scaled)[0]
         prob = model.predict_proba(X_scaled)[0][1]  # Probability of class 1
         risk_level = classify_risk(prob, input_dict)
-        
-        # Format probability as percentage
-        prob_percentage = f"{prob * 100:.1f}%"
-        
-        # Build detailed result message based on probability and prediction
-        if prob >= 0.7:  # High probability
-            result = f"High Risk of Diabetes (Probability: {prob_percentage})"
-        elif prob >= 0.5:  # Moderate to high probability
-            result = f"High Risk of Diabetes (Probability: {prob_percentage})"
-        elif prob >= 0.3:  # Moderate probability
-            result = f"Moderate Risk of Diabetes (Probability: {prob_percentage})"
-        else:  # Low probability
-            result = f"Low Risk of Diabetes (Probability: {prob_percentage})"
 
-        # Add risk factor assessment for more context
-        if prediction == 1:
-            # Check for critical indicators
-            critical_factors = []
-            if float(input_dict.get('Blood Glucose', 0)) > 125:
-                critical_factors.append("elevated blood glucose")
-            if float(input_dict.get('HbA1c', 0)) > 6.5:
-                critical_factors.append("high HbA1c")
-            if critical_factors:
-                factors_text = " and ".join(critical_factors)
-                result += f" - Critical indicators: {factors_text}"
+        # Custom messages for each risk level
+        if 'High Risk' in risk_level:
+            advice = 'Your results show a high risk. Please consult a healthcare professional immediately for diagnosis and lifestyle guidance.'
+        elif 'Medium Risk' in risk_level:
+            advice = 'You’re at moderate risk. Start making small healthy changes — eat balanced meals, stay active, and monitor your health regularly.'
+        else:
+            advice = 'Your risk is low — keep it that way! Maintain a healthy lifestyle with regular exercise and a nutritious diet.'
+
+        result = f"{risk_level}<br><span class='advice'>{advice}</span>"
 
     except Exception as e:
         result = f'Prediction error: {e}'
+        prev_values = None
         print(f"Prediction error details: {str(e)}")
 
     flash(result)
-    return redirect(url_for('home'))
+    # Pass previous values as JSON in query string
+    return redirect(url_for('home', prev_values=json.dumps(prev_values)))
 
 # Error handlers
 @app.errorhandler(404)
