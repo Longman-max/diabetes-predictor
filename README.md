@@ -1,4 +1,4 @@
-# PreciousKings
+# Diabetes Prediction
 
 A web application for making predictions using a machine learning model.
 
