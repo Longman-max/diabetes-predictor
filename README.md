@@ -1,4 +1,4 @@
-# Diabetes Prediction
+# Diabetes Predictor
 
 A web application for making predictions using a machine learning model.
 
