@@ -20,7 +20,7 @@ A web application for making predictions using a machine learning model.
 1. Clone the repository:
    ```sh
    git clone <repository-url>
-   cd PreciousKings
+   cd Diabetes-Predictor
    ```
 2. Create and activate a virtual environment:
    ```sh
