@@ -36,6 +36,7 @@ A web application for making predictions using a machine learning model.
    ```
 4. Run the application:
    ```sh
+   python train_model.py # optional
    python app.py
    ```
 5. Open your browser and go to `http://127.0.0.1:5000/`
