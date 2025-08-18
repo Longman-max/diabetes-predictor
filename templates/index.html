@@ -324,11 +324,10 @@
         </div>
         <p class="result-text final" id="result-text">{{ messages[0] }}</p>
         {% if result_message %}
+          {% set risk, advice = result_message %}
           <div class="result-text" style="margin-bottom: 0.5em; font-weight: bold;">
-            {{ result_message[0] }}
-          </div>
-          <div class="advice" style="margin-bottom: 1em; color: #d35400; font-size: 1.1em;">
-            {{ result_message[1] }}
+            {{ risk }}<br>
+            <span class="advice" style="color: #d35400; font-size: 1.1em;">{{ advice }}</span>
           </div>
         {% endif %}
         <p class="instruction-text">
