@@ -121,7 +121,8 @@ def predict():
         else:
             advice = 'Your risk is low — keep it that way! Maintain a healthy lifestyle with regular exercise and a nutritious diet.'
 
-        result = f"{risk_level}<br><span class='advice'>{advice}</span>"
+        # Pass risk_level and advice separately
+        result = (risk_level, advice)
 
     except Exception as e:
         result = f'Prediction error: {e}'
