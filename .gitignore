@@ -5,9 +5,11 @@ __pycache__/
 # Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Ignore model and scaler files
-*.pkl
-*.xml
+# Ignore model and scaler files except those needed for deployment
+!scaler.pkl
+!diabetes_rf_model.pkl
+!columns.pkl
+
 
 # Ignore CSV data files
 *.csv
