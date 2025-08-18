@@ -20,7 +20,7 @@ try:
     print("Loading model files...")
     with open('models/diabetes_rf_model.pkl', 'rb') as f:
         model = pickle.load(f)
-    with open('models/scaler.pkl', 'rb') as f:
+    with open('scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
     with open('models/columns.pkl', 'rb') as f:
         columns = pickle.load(f)

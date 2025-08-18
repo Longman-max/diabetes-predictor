@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 import pickle
 
 # File paths
-DATA_PATH = 'diabetes_dataset.csv'
+DATA_PATH = 'data/diabetes_dataset.csv'
 MODEL_PATH = 'diabetes_rf_model.pkl'
 SCALER_PATH = 'scaler.pkl'
 COLUMNS_PATH = 'columns.pkl'
@@ -26,7 +26,7 @@ def main():
     
     # Load and preprocess data
     try:
-        data = pd.read_csv(DATA_PATH)
+        data = pd.read_csv('data/diabetes_dataset.csv')
         
         # Create derived features from the dataset that match our form fields
         data['Blood Glucose'] = data['Fasting_Blood_Sugar']
