@@ -3,8 +3,16 @@
 A web application for making predictions using a machine learning model.
 
 <div style="text-align: center; margin-bottom: 10px;">
-  <img src="project-image/project.png" alt="project-image" style="max-width: 400px;" />
+  <a href="https://diabetes-predictor-li8h.onrender.com" target="_blank">
+    <img src="project-image/project.png" alt="project-image" style="max-width: 400px;" />
+  </a>
 </div>
+
+## Live Demo
+
+You can try out the app here:  
+[Diabetes Predictor Web App](https://diabetes-predictor-li8h.onrender.com)
+
 
 ## Features
 
@@ -23,7 +31,7 @@ A web application for making predictions using a machine learning model.
 
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
+   git clone https://github.com/Longman-max/diabetes-predictor.git
    cd Diabetes-Predictor
    ```
 2. Create and activate a virtual environment:
