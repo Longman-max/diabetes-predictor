@@ -2,6 +2,10 @@
 
 A web application for making predictions using a machine learning model.
 
+<div style="text-align: center; margin-bottom: 10px;">
+  <img src="project-image/project.png" alt="project-image" style="max-width: 400px;" />
+</div>
+
 ## Features
 
 - User-friendly web interface
