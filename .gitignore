@@ -6,11 +6,11 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Ignore model and scaler files
-diabetes_model.pkl
-scaler.pkl
+*.pkl
+*.xml
 
 # Ignore CSV data files
-diabetes.csv
+*.csv
 
 # Ignore system files
 .DS_Store
