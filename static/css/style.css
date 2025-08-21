@@ -119,7 +119,7 @@ button:hover {
 
 button#clear-result-btn {
   background-color: black;
-  color: white;
+  color: white !important ; 
 }
 
 /* Prediction Box */
