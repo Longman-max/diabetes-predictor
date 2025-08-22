@@ -22,7 +22,7 @@
           display: none !important;
         }
         .mobile-menu {
-          display: none; /* Only shown by JS */
+          display: none;
           flex-direction: column;
           align-items: flex-start;
           gap: 0;
@@ -33,7 +33,6 @@
         .menu-btn {
           display: block !important;
         }
-        /* Make dropdown flow in menu for height animation */
         .simulate-dropdown-wrapper-mobile #simulate-dropdown-mobile {
           position: static !important;
           width: 100% !important;
@@ -62,9 +61,6 @@
         }
       }
     </style>
-    <!-- <script>
-      alert("App is still under development. Some features may not work as expected.");
-    </script> -->
   </head>
   <body>
     <header>
@@ -163,9 +159,8 @@
     <h1>Diabetes Predictor</h1>
 
     <div class="two-column">
-      <!-- Form -->
       <div class="form-box">
-      <form action="/predict" method="post">
+        <form id="prediction-form" method="post" action="/predict">
           <h3>Medical Information</h3>
           <div class="form-grid">
             <div class="form-group">
@@ -196,8 +191,6 @@
               <label for="Skin thickness">Skin thickness: <span class="clinical-range">(7-100) </label>
               <input type="number" name="Skin thickness" required />
             </div>
-
-            <!-- The rest of the fields are now optional -->
             <div class="form-group">
               <label for="Pregnancies"
                 >Pregnancies: <span class="clinical-range">(0–17)</span></label
@@ -319,42 +312,12 @@
               <span class="error-message" id="error-Waiste-ratio"></span>
             </div>
           </div>
-
           <button type="submit">Predict</button>
         </form>
       </div>
 
-      <!-- Prediction Result -->
-      <div class="prediction-box" id="result">
+      <div class="prediction-box" id="result-box">
         <h3>Prediction Result</h3>
-        {% with messages = get_flashed_messages() %} {% if messages %}
-        <p class="status" id="status-text">Prediction complete</p>
-        <div class="progress-bar">
-          <span id="progress-bar-span" style="width: 100%"></span>
-        </div>
-        <div class="health-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-medical-icon lucide-briefcase-medical">
-            <path d="M12 11v4"/>
-            <path d="M14 13h-4"/>
-            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-            <path d="M18 6v14"/>
-            <path d="M6 6v14"/>
-            <rect width="20" height="14" x="2" y="6" rx="2"/>
-          </svg>
-        </div>
-        <p class="result-text final" id="result-text">{{ messages[0] }}</p>
-        {% if result_message %}
-          {% set risk, advice = result_message %}
-          <div class="result-text" style="margin-bottom: 0.5em; font-weight: bold;">
-            {{ risk }}<br>
-            <span class="advice" style="color: #d35400; font-size: 1.1em;">{{ advice }}</span>
-          </div>
-        {% endif %}
-        <p class="instruction-text">
-          Enter your medical information and click "Predict" to see your diabetes risk assessment.
-        </p>
-        <button type="button" id="clear-result-btn">Clear Result</button>
-        {% else %}
         <p class="status" id="status-text">Awaiting result...</p>
         <div class="progress-bar">
           <span id="progress-bar-span" style="width: 0%"></span>
@@ -369,16 +332,60 @@
             <rect width="20" height="14" x="2" y="6" rx="2"/>
           </svg>
         </div>
-        <p class="result-text" id="result-text">No prediction yet</p>
+        <div class="result-text-container">
+          <p class="result-text" id="result-text">No prediction yet</p>
+          <p class="advice-text" id="advice-text"></p>
+        </div>
         <p class="instruction-text">
-          Enter your medical information and click "Predict" to see your
-          diabetes risk assessment.
+          Enter your medical information and click<span class="emphasis" > "Predict" </span> to see your diabetes risk assessment.
         </p>
         <button type="button" id="clear-result-btn">Clear Result</button>
-        {% endif %} {% endwith %}
       </div>
     </div>
-  <script src="../static/js/script.js" ></script>
+    <script>
+      document.getElementById('prediction-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        document.getElementById('status-text').textContent = 'Predicting...';
+        document.getElementById('progress-bar-span').style.width = '50%';
+        document.getElementById('result-text').textContent = '';
+        document.getElementById('advice-text').textContent = '';
+        document.getElementById('result-box').className = 'prediction-box'; // Clear all classes
+
+        fetch(form.action, {
+          method: form.method,
+          body: formData,
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const resultText = document.getElementById('result-text');
+          const adviceText = document.getElementById('advice-text');
+          const resultBox = document.getElementById('result-box');
+
+          resultText.textContent = data.message;
+          adviceText.textContent = data.advice;
+
+          resultBox.classList.add(data.class_name);
+          
+          document.getElementById('status-text').textContent = 'Prediction complete';
+          document.getElementById('progress-bar-span').style.width = '100%';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('result-text').textContent = 'An error occurred during prediction.';
+          document.getElementById('advice-text').textContent = '';
+          document.getElementById('status-text').textContent = 'Prediction failed';
+          document.getElementById('progress-bar-span').style.width = '0%';
+        });
+      });
+    </script>
+    <script src="../static/js/script.js" ></script>
     <script src="../static/js/theme.js"></script>
-  </body>
-</html>
