@@ -76,15 +76,24 @@
           <h1 style="margin: 0">Precious Kings</h1>
         </div>
         <div class="header-actions" id="header-actions">
-          <button
-            type="button"
-            id="simulate-btn"
-            class="simulate-btn"
-            style="display: flex; align-items: center; gap: 6px; cursor: pointer;"
-          >
-            <span style="color: #111">Simulate</span>
-            <span class="material-symbols-outlined" style="font-size: 24px; color: #111;">casino</span>
-          </button>
+          <div class="simulate-dropdown-wrapper" style="position: relative;">
+            <button
+              type="button"
+              id="simulate-btn"
+              class="simulate-btn"
+              aria-haspopup="true"
+              aria-expanded="false"
+              style="display: flex; align-items: center; gap: 6px; cursor: pointer;"
+            >
+              <span style="color: #111">Simulate</span>
+              <span class="material-symbols-outlined" style="font-size: 24px; color: #111;">casino</span>
+            </button>
+            <div id="simulate-dropdown" role="menu" aria-label="Simulation presets" style="display: none; position: absolute; right: 0; top: calc(100% + 8px); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); min-width: 180px;">
+              <button class="simulate-option" data-risk="low" style="display:block; width:100%; padding:10px 14px; border:none; background:none; text-align:left;">Low Risk</button>
+              <button class="simulate-option" data-risk="medium" style="display:block; width:100%; padding:10px 14px; border:none; background:none; text-align:left;">Medium Risk</button>
+              <button class="simulate-option" data-risk="high" style="display:block; width:100%; padding:10px 14px; border:none; background:none; text-align:left;">High Risk</button>
+            </div>
+          </div>
           <button
             type="button"
             id="theme-toggle"
@@ -108,25 +117,34 @@
             overflow: hidden;
           "
         >
-          <button
-            type="button"
-            id="simulate-btn-mobile"
-            class="simulate-btn"
-            style="
-              width: 100%;
-              display: flex;
-              align-items: center;
-              gap: 6px;
-              cursor: pointer;
-            "
-          >
-            <span style="color: #111">Simulate</span>
-            <span
-              class="material-symbols-outlined"
-              style="font-size: 28px; color: #111; line-height: 1"
-              >casino</span
+          <div class="simulate-dropdown-wrapper-mobile" style="width:100%; position: relative;">
+            <button
+              type="button"
+              id="simulate-btn-mobile"
+              class="simulate-btn"
+              aria-haspopup="true"
+              aria-expanded="false"
+              style="
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+              "
             >
-          </button>
+              <span style="color: #111">Simulate</span>
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 28px; color: #111; line-height: 1"
+                >casino</span
+              >
+            </button>
+            <div id="simulate-dropdown-mobile" role="menu" aria-label="Simulation presets" style="display:none; position: absolute; right: 0; top: calc(100% + 6px); background: #fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.08); min-width:160px;">
+              <button class="simulate-option-mobile" data-risk="low" style="display:block; width:100%; padding:10px 14px; border:none; background:none; text-align:left;">Low Risk</button>
+              <button class="simulate-option-mobile" data-risk="medium" style="display:block; width:100%; padding:10px 14px; border:none; background:none; text-align:left;">Medium Risk</button>
+              <button class="simulate-option-mobile" data-risk="high" style="display:block; width:100%; padding:10px 14px; border:none; background:none; text-align:left;">High Risk</button>
+            </div>
+          </div>
           <a
             href="/about"
             class="about-btn"
