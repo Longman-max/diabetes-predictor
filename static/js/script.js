@@ -1,25 +1,5 @@
-    document.addEventListener("DOMContentLoaded", function () {
-  var clearBtn = document.getElementById("clear-result-btn");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", function () {
-      document.getElementById("status-text").textContent = "Awaiting result...";
-      document.getElementById("progress-bar-span").style.width = "0%";
-      document.getElementById("progress-bar-span").style.animation = "";
-      document.getElementById("result-text").textContent = "No prediction yet";
-      // updateHealthIcon("none"); // Reset icon
-    });
-  }
-
-  // Function to update health icon based on risk level
-  function updateHealthIcon(risk) {
-    const healthIcon = document.querySelector('.health-icon');
-    if (!healthIcon) return;
-
-    // Remove any existing risk classes
-    healthIcon.classList.remove('high-risk', 'medium-risk', 'low-risk');
-
-    // Define the SVG based on risk level
-    const medicalBriefcaseSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-medical-icon lucide-briefcase-medical">
+// Define the SVG based on risk level
+ const medicalBriefcaseSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-medical-icon lucide-briefcase-medical">
             <path d="M12 11v4"/>
             <path d="M14 13h-4"/>
             <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
@@ -34,6 +14,31 @@
             <path d="M12 17h.01"/>
           </svg>`;
 
+
+document.addEventListener("DOMContentLoaded", function () {
+  var clearBtn = document.getElementById("clear-result-btn");
+;
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      document.getElementById("status-text").textContent = "Awaiting result...";
+      document.getElementById("progress-bar-span").style.width = "0%";
+      document.getElementById("progress-bar-span").style.animation = "";
+      document.getElementById("result-text").textContent = "No prediction yet";
+      document.getElementById("advice-text").textContent = "";
+      document.querySelector('.health-icon').innerHTML = medicalBriefcaseSVG;
+       document.querySelector('.health-icon').classList.add('default-icon');
+    });
+  }
+
+  // Function to update health icon based on risk level
+  function updateHealthIcon(risk) {
+    const healthIcon = document.querySelector('.health-icon');
+    if (!healthIcon) return;
+
+    // Remove any existing risk classes
+    healthIcon.classList.remove('high-risk', 'medium-risk', 'low-risk');
+
+   
     // Update icon and class based on risk level
     if (risk === "high") {
       healthIcon.innerHTML = alertTriangleSVG;
@@ -55,7 +60,7 @@
       updateHealthIcon('high');
     } else if (text.includes('medium risk') || text.includes('moderate')) {
       updateHealthIcon('medium');
-    } else if (text.includes('low risk') || text.includes('unlikely')) {
+    } else if (text.includes('no risk') || text.includes('unlikely')) {
       updateHealthIcon('low');
     }
   }
