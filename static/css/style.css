@@ -119,7 +119,7 @@ button:hover {
 
 button#clear-result-btn {
   background-color: black;
-  color: white !important ; 
+  color: white !important ;
 }
 
 /* Prediction Box */
@@ -194,7 +194,7 @@ button#clear-result-btn {
   margin: 0 auto 1.5rem auto;
   border-radius: 50%;
   background: var(--icon-bg, #e0e0e0);
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
   transition: background 0.3s;
   flex-shrink: 0;
 }
@@ -243,6 +243,7 @@ button#clear-result-btn {
   justify-content: space-between;
   gap: 10px;
   width: 100%;
+  margin-top: 5px;
 }
 .header-left {
   display: flex;
@@ -254,8 +255,14 @@ button#clear-result-btn {
 .header-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 }
+
+.header-actions .theme-btn {
+  margin: 0;
+}
+
 .simulate-btn {
   margin: 0;
   background: #fff;
