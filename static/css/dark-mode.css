@@ -86,3 +86,43 @@ body {
     transform: rotate(45deg);
   }
 }
+
+/* Navbar text + icons */
+.navbar,
+.navbar h1,
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .material-symbols-outlined,
+.navbar .btn span {
+  color: var(--text-color) !important;
+}
+
+/* Navbar background */
+.navbar {
+  background-color: var(--header-bg) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Buttons inside navbar */
+.navbar .simulate-btn,
+.navbar .theme-btn {
+  background-color: var(--box-bg) !important;
+  border: 1.5px solid var(--text-color) !important;
+}
+
+.navbar .simulate-btn span,
+.navbar .theme-btn span {
+  color: var(--text-color) !important;
+}
+
+/* Light mode (black hamburger lines) */
+[data-theme="light"] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,0,0,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+
+/* Dark mode (white hamburger lines) */
+[data-theme="dark"] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+
+
