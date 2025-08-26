@@ -10,11 +10,90 @@
       href="../static/images/logo.jpeg"
       type="image/x-icon"
     />
+    <!-- Google Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        min-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        background: #f5f5f5;
+      }
+
+      nav {
+        padding: 15px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .home-btn {
+        color: #fff;
+        font-size: 16px;
+        height: 40px;
+        background: #111;
+        padding: 6px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.2s;
+        border: none;
+        cursor: pointer;
+      }
+
+      .about-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .about-container h2 {
+        margin-bottom: 15px;
+      }
+
+      /* Scroll button */
+      .scroll-btn {
+        position: fixed;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        border: 2px solid #666;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .scroll-btn:hover {
+        border-color: #000;
+        background: #333;
+      }
+
+      .scroll-btn span {
+        font-family: "Material Symbols Outlined";
+        font-size: 28px;
+        color: #fff;
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <a href="/"><h2>Home</h2></a>
-    </header>
+    <nav>
+      <a href="/"><button class="home-btn">Home</button></a>
+    </nav>
+
     <div class="about-container">
       <h2>About This Application</h2>
       <p>
@@ -29,5 +108,19 @@
         diagnosis and treatment.
       </p>
     </div>
+
+    <!-- Scroll Up Button -->
+    <!-- <button class="scroll-btn" id="scrollUp">
+      <span class="material-symbols-outlined">arrow_upward</span>
+    </button> -->
+
+    <script>
+      document.getElementById("scrollUp").addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+    </script>
   </body>
 </html>
