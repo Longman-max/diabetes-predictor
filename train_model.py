@@ -40,7 +40,7 @@ def main():
         data['Alcohol Intake'] = data['Alcohol_Intake']
         # 'Diet_Type' is used directly
         data['Cholesterol'] = data['Cholesterol_Level']
-        data['Waiste ratio'] = data['Waist_Hip_Ratio'] * 100  # Convert to cm
+        data['Waist ratio'] = data['Waist_Hip_Ratio'] * 100  # Convert to cm
         data['Triglycerides'] = data['Cholesterol_Level'] * 0.8  # Rough approximation
 
         # List of features that match our form
@@ -48,7 +48,7 @@ def main():
             'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c',
             'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history',
             'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet_Type',
-            'Cholesterol', 'Triglycerides', 'Waiste ratio'
+            'Cholesterol', 'Triglycerides', 'Waist ratio'
         ]
 
         print('Prepared dataset with columns:', list(data.columns))

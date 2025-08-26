@@ -156,12 +156,12 @@ if(form) {
         document.getElementById("error-Triglycerides").textContent = "";
       }
       // Waist Circumference
-      const waist = document.getElementById("Waiste-ratio");
+      const waist = document.getElementById("Waist-ratio");
       if (waist.value === "" || waist.value < 60 || waist.value > 150) {
-        document.getElementById("error-Waiste-ratio").textContent = "60–150 cm";
+        document.getElementById("error-Waist-ratio").textContent = "60–150 cm";
         valid = false;
       } else {
-        document.getElementById("error-Waiste-ratio").textContent = "";
+        document.getElementById("error-Waist-ratio").textContent = "";
       }
       if (!valid) e.preventDefault();
     });
@@ -200,7 +200,7 @@ function fillFields() {
     'Diet_Type': () => getRandomOption(["Non-Vegetarian", "Vegetarian", "Vegan"]),
     'Cholesterol': () => getRandomInRange(100, 400),
     'Triglycerides': () => getRandomInRange(50, 500),
-    'Waiste ratio': () => getRandomInRange(60, 150)
+    'Waist ratio': () => getRandomInRange(60, 150)
   };
 
   // Loop through the fields and populate them
