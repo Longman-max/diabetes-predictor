@@ -4,7 +4,7 @@ A web application for making predictions using a machine learning model.
 
 <div style="text-align: center; margin-bottom: 10px;">
   <a href="https://diabetes-predictor-li8h.onrender.com" target="_blank">
-    <img src="project-image/project.png" alt="project-image" style="max-width: 400px;" />
+    <img src="project-image/project-dark.png" alt="project-image" style="max-width: 400px;" />
   </a>
 </div>
 
