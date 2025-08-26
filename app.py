@@ -13,18 +13,23 @@ os.makedirs(app.instance_path, exist_ok=True)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = 'your_secret_key_here'
 
+# Load model + scaler + columns from same directory
 try:
     print("Loading model files...")
-    with open('models/diabetes_rf_model.pkl', 'rb') as f:
+
+    with open('diabetes_rf_model.pkl', 'rb') as f:
         model = pickle.load(f)
     with open('scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
-    with open('models/columns.pkl', 'rb') as f:
+    with open('columns.pkl', 'rb') as f:
         columns = pickle.load(f)
+
     print("Model files loaded successfully")
+
 except Exception as e:
     print(f"Error loading model files: {e}")
     raise
+
 
 def classify_risk(prob, features):
     """Classify diabetes risk by combining model probability with clinical risk factors."""
@@ -35,8 +40,6 @@ def classify_risk(prob, features):
         risk_score += 3
     elif prob >= 0.3:
         risk_score += 2
-    else:
-        risk_score += 0
 
     if features.get('Blood Glucose', 0) >= 126:
         risk_score += 2
@@ -76,6 +79,7 @@ def classify_risk(prob, features):
             'class_name': 'no-risk'
         }
 
+
 @app.route('/')
 def home():
     prev_values = None
@@ -87,41 +91,59 @@ def home():
             prev_values = None
     return render_template('index.html', prev_values=prev_values)
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
     import json
     try:
+        # Collect input from form
         input_dict = {col: request.form.get(col, '') for col in [
             'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c',
             'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history',
             'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet_Type',
-            'Cholesterol', 'Triglycerides', 'Waiste ratio'
+            'Cholesterol', 'Triglycerides', 'Waist ratio'
         ]}
 
         prev_values = input_dict.copy()
 
+        # Convert numeric values safely, keep categories as strings
         for key in input_dict:
             try:
                 input_dict[key] = float(input_dict[key])
-            except ValueError:
-                pass
+            except (ValueError, TypeError):
+                if input_dict[key] in ['', None]:
+                    input_dict[key] = 0  # fill empty numeric with 0
 
+        # Debug logging
+        print("Raw form data:", request.form.to_dict())
+        print("Processed input dict:", input_dict)
+
+        # Create dataframe for model
         X_input = pd.DataFrame([input_dict])
 
+        # One-hot encode categorical
         X_input = pd.get_dummies(X_input, drop_first=True)
+
+        # Ensure all expected columns exist
         for col in columns:
             if col not in X_input:
                 X_input[col] = 0
         X_input = X_input[columns]
 
-        X_scaled = scaler.transform(X_input)
+        # Debug final input columns
+        print("Final input columns:", X_input.columns.tolist())
 
+        # Scale and predict
+        X_scaled = scaler.transform(X_input)
         prediction = model.predict(X_scaled)[0]
         prob = model.predict_proba(X_scaled)[0][1]
+
+        # Risk classification
         risk_data = classify_risk(prob, input_dict)
 
         return jsonify(risk_data)
@@ -131,17 +153,21 @@ def predict():
         print(f"Prediction error details: {str(e)}")
         return jsonify(result), 500
 
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('index.html'), 404
+
 
 @app.errorhandler(500)
 def internal_error(error):
     return render_template('index.html'), 500
 
+
 @app.route('/static/<path:filename>')
 def static_files(filename):
     return send_from_directory(app.static_folder, filename)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
