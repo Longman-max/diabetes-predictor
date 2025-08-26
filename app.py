@@ -98,7 +98,7 @@ def predict():
         input_dict = {col: request.form.get(col, '') for col in [
             'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c',
             'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history',
-            'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet Qualtiy',
+            'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet_Type',
             'Cholesterol', 'Triglycerides', 'Waiste ratio'
         ]}
 
