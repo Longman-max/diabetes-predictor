@@ -23,11 +23,11 @@ def classify_risk(prob):
 
 def main():
     print("Starting model training process...")
-    
+
     # Load and preprocess data
     try:
         data = pd.read_csv('data/diabetes_dataset.csv')
-        
+
         # Create derived features from the dataset that match our form fields
         data['Blood Glucose'] = data['Fasting_Blood_Sugar']
         data['Blood Pressure'] = data['Heart_Rate']  # This might need adjustment
@@ -38,19 +38,19 @@ def main():
         data['Physical Activity'] = data['Physical_Activity']
         data['Smoking status'] = data['Smoking_Status']
         data['Alcohol Intake'] = data['Alcohol_Intake']
-        data['Diet Qualtiy'] = data['Diet_Type']
+        # 'Diet_Type' is used directly
         data['Cholesterol'] = data['Cholesterol_Level']
         data['Waiste ratio'] = data['Waist_Hip_Ratio'] * 100  # Convert to cm
         data['Triglycerides'] = data['Cholesterol_Level'] * 0.8  # Rough approximation
-        
+
         # List of features that match our form
         feature_cols = [
-            'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c', 
+            'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c',
             'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history',
-            'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet Qualtiy',
+            'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet_Type',
             'Cholesterol', 'Triglycerides', 'Waiste ratio'
         ]
-        
+
         print('Prepared dataset with columns:', list(data.columns))
 
         # Verify all required features are present
@@ -106,16 +106,16 @@ def main():
         probs = model.predict_proba(X_scaled)[:, 1]
         predictions = model.predict(X_scaled)
         risk_levels = np.array([classify_risk(p) for p in probs])
-        
+
         # Calculate basic metrics
         accuracy = (predictions == y).mean()
         print(f"\nModel Accuracy: {accuracy:.2%}")
-        
+
         # Print risk level distribution
         risk_dist = pd.Series(risk_levels).value_counts()
         print("\nRisk Level Distribution:")
         print(risk_dist)
-        
+
         # Save predictions to CSV
         print("\nSaving predictions...")
         output_df = data.copy()
@@ -124,7 +124,7 @@ def main():
         output_df['Diabetes_Risk_Level'] = risk_levels
         output_df.to_csv('diabetes_predictions_with_risk.csv', index=False)
         print("Predictions saved to 'diabetes_predictions_with_risk.csv'")
-        
+
     except Exception as e:
         print(f"Error during model training: {e}")
         raise
