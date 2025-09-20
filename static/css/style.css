@@ -25,6 +25,19 @@ body nav {
 /* Glassy Navbar (Light Mode) */
 .navbar {
   margin-bottom: 20px;
+  position: relative;
+}
+
+.navbar .container-fluid {
+  flex-wrap: nowrap;
+}
+
+.navbar-brand {
+  flex-shrink: 0;
+  max-width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 h1 {
@@ -290,6 +303,34 @@ form h3 {
   margin-top: 0;
 }
 
+.navbar-toggler {
+  padding: 4px 8px;
+  margin-left: 8px;
+}
+
+.navbar-collapse {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  z-index: 1000;
+}
+
+@media (min-width: 992px) {
+  .navbar-collapse {
+    position: static;
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    margin-top: 0;
+  }
+}
+
 .simulate-btn {
   cursor: pointer;
   display: flex;
@@ -405,11 +446,35 @@ form h3 {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 8px;
-  z-index: 1000;
+  z-index: 1001; /* Higher than navbar-collapse */
   margin: 0 20px;
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@media (max-width: 991.98px) {
+  .dropdown-menu {
+    position: static !important;
+    float: none;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .navbar-nav {
+    gap: 10px !important;
+  }
+
+  .simulate-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .about-btn {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+  }
 }
 .mobile-menu.show {
   display: flex;
