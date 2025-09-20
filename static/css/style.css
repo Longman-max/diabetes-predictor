@@ -5,7 +5,7 @@
 }
 
 html {
-  user-select: none;
+  /* user-select: none; */
   scroll-behavior: smooth;
 }
 
@@ -100,7 +100,8 @@ label .clinical-range {
   margin-left: 4px;
 }
 
-input {
+input,
+select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -128,7 +129,7 @@ button:hover {
 
 button#clear-result-btn {
   background-color: black;
-  color: white !important ;
+  color: white !important;
 }
 
 /* Prediction Box */
@@ -187,17 +188,21 @@ form h3 {
   font-weight: 500;
 }
 
-/* update risk color */
-.no-risk {
-  color: #198754 !important;
+/* Risk color classes */
+.low-risk .result-text {
+  color: #198754 !important; /* Green */
 }
 
-.medium-risk {
-  color: #fd7e14 !important;
+.fair-risk .result-text {
+  color: #ffc107 !important; /* Yellow */
 }
 
-.high-risk {
-  color: #dc3545 !important;
+.moderate-risk .result-text {
+  color: #fd7e14 !important; /* Orange */
+}
+
+.high-risk .result-text {
+  color: #dc3545 !important; /* Red */
 }
 
 .result-text {
@@ -208,10 +213,11 @@ form h3 {
 
 .advice-text {
   text-align: center !important;
-  font-size: 20px;
+  font-size: 16px; /* Adjusted for better fit */
+  font-weight: 500;
 }
 
-/* Health styling */
+/* Health icon styling */
 .health-icon {
   display: flex;
   align-items: center;
@@ -235,12 +241,17 @@ form h3 {
   justify-self: center;
 }
 
+/* Icon colors */
 .health-icon.high-risk svg {
   color: #dc3545; /* Red for high risk */
 }
 
-.health-icon.medium-risk svg {
-  color: #fd7e14; /* Orange for medium risk */
+.health-icon.moderate-risk svg {
+  color: #fd7e14; /* Orange for moderate risk */
+}
+
+.health-icon.fair-risk svg {
+  color: #ffc107; /* Yellow for fair risk */
 }
 
 .health-icon.low-risk svg {
@@ -300,10 +311,6 @@ form h3 {
 .simulate-btn:hover {
   background: #ffffff57;
 }
-
-/* .simulate-btn .material-symbols-outlined{
-  font-weight: 600;
-} */
 
 .navbar .about-btn {
   color: rgb(255, 255, 255);
