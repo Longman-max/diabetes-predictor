@@ -13,10 +13,20 @@ function updateHealthIcon(className) {
   const healthIcon = document.querySelector(".health-icon");
   if (!healthIcon) return;
 
-  healthIcon.classList.remove("high-risk", "moderate-risk", "fair-risk", "non-diabetic", "default-icon");
+  healthIcon.classList.remove(
+    "high-risk",
+    "moderate-risk",
+    "fair-risk",
+    "non-diabetic",
+    "default-icon"
+  );
   healthIcon.classList.add(className);
 
-  if (className === "high-risk" || className === "moderate-risk" || className === "fair-risk") {
+  if (
+    className === "high-risk" ||
+    className === "moderate-risk" ||
+    className === "fair-risk"
+  ) {
     healthIcon.innerHTML = alertTriangleSVG;
   } else if (className === "non-diabetic") {
     healthIcon.innerHTML = checkCircleSVG;
@@ -27,8 +37,8 @@ function updateHealthIcon(className) {
 
 // --- Function to display results ---
 function displayPredictionResult(prediction, advice, className) {
-  console.log('Displaying result:', { prediction, advice, className });
-  
+  console.log("Displaying result:", { prediction, advice, className });
+
   document.getElementById("status-text").textContent = "Prediction complete";
   document.getElementById("progress-bar-span").style.width = "100%";
   document.getElementById("result-text").textContent = prediction;
@@ -44,48 +54,66 @@ function displayPredictionResult(prediction, advice, className) {
 // --- Validation function ---
 function validateForm(formData) {
   const errors = [];
-  
+
   // Required fields validation
   const requiredFields = [
-    'Age', 'BMI', 'Blood Glucose', 'Blood Pressure', 'HbA1c',
-    'Insulin Level', 'Skin thickness', 'Pregnancies', 'Family history',
-    'Physical Activity', 'Smoking status', 'Alcohol Intake', 'Diet_Type',
-    'Cholesterol', 'Triglycerides', 'Waist ratio'
+    "Age",
+    "Weight",
+    "Blood Glucose",
+    "HbA1c",
+    "race",
+    "gender",
   ];
-  
-  requiredFields.forEach(field => {
+
+  requiredFields.forEach((field) => {
     const value = formData.get(field);
-    if (!value || value.trim() === '') {
+    if (!value || value.trim() === "") {
       errors.push(`${field} is required`);
     }
   });
-  
+
   // Numeric range validations
-  const age = parseFloat(formData.get('Age'));
-  if (age < 10 || age > 100) {
-    errors.push('Age must be between 10-100');
+  const age = parseFloat(formData.get("Age"));
+  if (age < 0 || age > 100) {
+    errors.push("Age must be between 0-100");
   }
-  
-  const bmi = parseFloat(formData.get('BMI'));
-  if (bmi < 10 || bmi > 60) {
-    errors.push('BMI must be between 10-60');
+
+  const weight = parseFloat(formData.get("Weight"));
+  if (weight < 20 || weight > 200) {
+    errors.push("Weight must be between 20-200 kg");
   }
-  
-  const glucose = parseFloat(formData.get('Blood Glucose'));
-  if (glucose < 50 || glucose > 800) {
-    errors.push('Blood Glucose must be between 50-800');
+
+  const glucose = parseFloat(formData.get("Blood Glucose"));
+  if (glucose < 50 || glucose > 400) {
+    errors.push("Blood Glucose must be between 50-400 mg/dL");
   }
-  
-  const bp = parseFloat(formData.get('Blood Pressure'));
-  if (bp < 80 || bp > 200) {
-    errors.push('Blood Pressure must be between 80-200');
-  }
-  
-  const hba1c = parseFloat(formData.get('HbA1c'));
+
+  const hba1c = parseFloat(formData.get("HbA1c"));
   if (hba1c < 4.0 || hba1c > 14.0) {
-    errors.push('HbA1c must be between 4.0-14.0');
+    errors.push("HbA1c must be between 4.0-14.0%");
   }
-  
+
+  // Optional numeric validations
+  const outpatient = parseFloat(formData.get("number_outpatient"));
+  if (!isNaN(outpatient) && (outpatient < 0 || outpatient > 50)) {
+    errors.push("Number of Outpatient Visits must be between 0-50");
+  }
+
+  const emergency = parseFloat(formData.get("number_emergency"));
+  if (!isNaN(emergency) && (emergency < 0 || emergency > 20)) {
+    errors.push("Number of Emergency Visits must be between 0-20");
+  }
+
+  const inpatient = parseFloat(formData.get("number_inpatient"));
+  if (!isNaN(inpatient) && (inpatient < 0 || inpatient > 20)) {
+    errors.push("Number of Inpatient Visits must be between 0-20");
+  }
+
+  const medications = parseFloat(formData.get("num_medications"));
+  if (!isNaN(medications) && (medications < 0 || medications > 50)) {
+    errors.push("Number of Medications must be between 0-50");
+  }
+
   return errors;
 }
 
@@ -100,15 +128,20 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
 
       const formData = new FormData(predictionForm);
-      
+
       // Validate form
       const validationErrors = validateForm(formData);
       if (validationErrors.length > 0) {
-        alert('Please fix the following errors:\n' + validationErrors.join('\n'));
+        alert(
+          "Please fix the following errors:\n" + validationErrors.join("\n")
+        );
         return;
       }
-      
-      console.log('Submitting form data:', Object.fromEntries(formData.entries()));
+
+      console.log(
+        "Submitting form data:",
+        Object.fromEntries(formData.entries())
+      );
 
       // Update UI to show prediction in progress
       document.getElementById("status-text").textContent = "Predicting...";
@@ -122,14 +155,14 @@ document.addEventListener("DOMContentLoaded", function () {
         body: formData,
       })
         .then((response) => {
-          console.log('Response status:', response.status);
+          console.log("Response status:", response.status);
           if (!response.ok) {
-            return response.json().then(err => Promise.reject(err));
+            return response.json().then((err) => Promise.reject(err));
           }
           return response.json();
         })
         .then((data) => {
-          console.log('Received data:', data);
+          console.log("Received data:", data);
           if (data.error) {
             throw new Error(data.error);
           }
@@ -137,8 +170,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           console.error("Error:", error);
-          document.getElementById("result-text").textContent = "Prediction failed: " + (error.message || error.error || "Unknown error");
-          document.getElementById("advice-text").textContent = "Please check your input and try again.";
+          document.getElementById("result-text").textContent =
+            "Prediction failed: " +
+            (error.message || error.error || "Unknown error");
+          document.getElementById("advice-text").textContent =
+            "Please check your input and try again.";
           document.getElementById("status-text").textContent = "Error";
           document.getElementById("progress-bar-span").style.width = "0%";
         });
@@ -157,10 +193,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const healthIcon = document.querySelector(".health-icon");
       if (healthIcon) {
         healthIcon.innerHTML = medicalBriefcaseSVG;
-        healthIcon.classList.remove("high-risk", "moderate-risk", "fair-risk", "non-diabetic");
+        healthIcon.classList.remove(
+          "high-risk",
+          "moderate-risk",
+          "fair-risk",
+          "non-diabetic"
+        );
         healthIcon.classList.add("default-icon");
       }
-      
+
       // Clear form
       const form = document.getElementById("prediction-form");
       if (form) {
@@ -173,7 +214,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const simulateBtn = document.getElementById("simulate-btn");
   if (simulateBtn) {
     simulateBtn.addEventListener("click", () => {
-      const options = [simulateNonDiabetic, simulateFairRisk, simulateModerateRisk, simulateHighRisk];
+      const options = [
+        simulateNonDiabetic,
+        simulateFairRisk,
+        simulateModerateRisk,
+        simulateHighRisk,
+      ];
       const randomProfile = options[Math.floor(Math.random() * options.length)];
       randomProfile();
       scrollToPredict();
@@ -183,7 +229,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const simulateBtnMobile = document.getElementById("simulate-btn-mobile");
   if (simulateBtnMobile) {
     simulateBtnMobile.addEventListener("click", () => {
-      const options = [simulateNonDiabetic, simulateFairRisk, simulateModerateRisk, simulateHighRisk];
+      const options = [
+        simulateNonDiabetic,
+        simulateFairRisk,
+        simulateModerateRisk,
+        simulateHighRisk,
+      ];
       const randomProfile = options[Math.floor(Math.random() * options.length)];
       randomProfile();
       scrollToPredict();
@@ -201,7 +252,8 @@ const getRandomInRange = (min, max, decimals = 0) => {
   const num = Math.random() * (max - min) + min;
   return decimals ? Number(num.toFixed(decimals)) : Math.floor(num);
 };
-const getRandomOption = (options) => options[getRandomInRange(0, options.length)];
+const getRandomOption = (options) =>
+  options[getRandomInRange(0, options.length)];
 const setFieldValue = (name, value) => {
   const element = document.querySelector(`[name="${name}"]`);
   if (element) {
@@ -227,22 +279,23 @@ function fillFields() {
 
   // Define the ranges and options for each form field
   const fieldData = {
-    'Age': () => getRandomInRange(18, 80),
-    'BMI': () => getRandomInRange(18.5, 40, 1),
-    'Blood Glucose': () => getRandomInRange(70, 200),
-    'Blood Pressure': () => getRandomInRange(80, 180),
-    'HbA1c': () => getRandomInRange(4.0, 12.0, 1),
-    'Insulin Level': () => getRandomInRange(2, 300),
-    'Skin thickness': () => getRandomInRange(7, 99),
-    'Pregnancies': () => getRandomInRange(0, 17),
-    'Family history': () => getRandomOption(['0', '1']),
-    'Physical Activity': () => getRandomOption(["Low", "Medium", "High"]),
-    'Smoking status': () => getRandomOption(["Smoker", "Non-Smoker"]),
-    'Alcohol Intake': () => getRandomInRange(0, 30),
-    'Diet_Type': () => getRandomOption(["Non-Vegetarian", "Vegetarian", "Vegan"]),
-    'Cholesterol': () => getRandomInRange(100, 400),
-    'Triglycerides': () => getRandomInRange(50, 500),
-    'Waist ratio': () => getRandomInRange(60, 150)
+    Age: () => getRandomInRange(20, 80),
+    Weight: () => getRandomInRange(50, 120),
+    "Blood Glucose": () => getRandomInRange(70, 300),
+    HbA1c: () => getRandomInRange(5.0, 10.0, 1),
+    number_outpatient: () => getRandomInRange(0, 10),
+    number_emergency: () => getRandomInRange(0, 5),
+    number_inpatient: () => getRandomInRange(0, 3),
+    num_medications: () => getRandomInRange(0, 10),
+    race: () =>
+      getRandomOption([
+        "Caucasian",
+        "AfricanAmerican",
+        "Asian",
+        "Hispanic",
+        "Other",
+      ]),
+    gender: () => getRandomOption(["Female", "Male", "Other"]),
   };
 
   // Loop through the fields and populate them
@@ -255,7 +308,7 @@ function fillFields() {
       console.warn(`Simulate fields: Element with name "${name}" not found.`);
     }
   }
-  scrollToPredict()
+  scrollToPredict();
 }
 
 // --- Scroll helper ---
