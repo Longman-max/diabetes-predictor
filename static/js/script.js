@@ -212,85 +212,50 @@ const setFieldValue = (name, value) => {
   }
 };
 
-// --- Updated Simulation Functions with more extreme values ---
-function simulateNonDiabetic() {
-  console.log('Simulating non-diabetic profile...');
-  setFieldValue("Age", getRandomInRange(18, 30)); // Very young
-  setFieldValue("BMI", getRandomInRange(18.5, 23, 1)); // Normal weight
-  setFieldValue("Blood Glucose", getRandomInRange(70, 85)); // Excellent glucose
-  setFieldValue("Blood Pressure", getRandomInRange(90, 110)); // Good BP
-  setFieldValue("HbA1c", getRandomInRange(4.0, 5.2, 1)); // Excellent HbA1c
-  setFieldValue("Insulin Level", getRandomInRange(2, 20)); // Low insulin
-  setFieldValue("Skin thickness", getRandomInRange(10, 20)); // Thin
-  setFieldValue("Pregnancies", getRandomInRange(0, 1)); // Few pregnancies
-  setFieldValue("Family history", "0"); // No family history
-  setFieldValue("Physical Activity", "High"); // Very active
-  setFieldValue("Smoking status", "Non-Smoker"); // Non-smoker
-  setFieldValue("Alcohol Intake", getRandomInRange(0, 2)); // Very low alcohol
-  setFieldValue("Diet_Type", getRandomOption(["Vegetarian", "Vegan"])); // Healthy diet
-  setFieldValue("Cholesterol", getRandomInRange(120, 180)); // Good cholesterol
-  setFieldValue("Triglycerides", getRandomInRange(50, 120)); // Low triglycerides
-  setFieldValue("Waist ratio", getRandomInRange(65, 80)); // Small waist
-}
+function fillFields() {
+  // Helper function to get a random number within a range
+  const getRandomInRange = (min, max, decimals = 0) => {
+    const num = Math.random() * (max - min) + min;
+    return decimals ? Number(num.toFixed(decimals)) : Math.floor(num);
+  };
 
-function simulateFairRisk() {
-  console.log('Simulating fair risk profile...');
-  setFieldValue("Age", getRandomInRange(30, 40)); // Middle age
-  setFieldValue("BMI", getRandomInRange(24, 27, 1)); // Slightly overweight
-  setFieldValue("Blood Glucose", getRandomInRange(95, 105)); // Slightly elevated
-  setFieldValue("Blood Pressure", getRandomInRange(115, 125)); // Slightly high
-  setFieldValue("HbA1c", getRandomInRange(5.3, 5.8, 1)); // Normal-high
-  setFieldValue("Insulin Level", getRandomInRange(30, 60)); // Moderate insulin
-  setFieldValue("Skin thickness", getRandomInRange(22, 28)); // Moderate
-  setFieldValue("Pregnancies", getRandomInRange(1, 3)); // Some pregnancies
-  setFieldValue("Family history", getRandomOption(["0", "1"])); // Maybe family history
-  setFieldValue("Physical Activity", getRandomOption(["Medium", "High"])); // Moderate activity
-  setFieldValue("Smoking status", "Non-Smoker"); // Non-smoker
-  setFieldValue("Alcohol Intake", getRandomInRange(3, 7)); // Moderate alcohol
-  setFieldValue("Diet_Type", getRandomOption(["Vegetarian", "Non-Vegetarian"])); // Mixed diet
-  setFieldValue("Cholesterol", getRandomInRange(180, 210)); // Borderline
-  setFieldValue("Triglycerides", getRandomInRange(120, 170)); // Borderline
-  setFieldValue("Waist ratio", getRandomInRange(80, 95)); // Moderate waist
-}
+  // Helper function to get a random item from an array
+  const getRandomOption = (options) => {
+    const index = getRandomInRange(0, options.length);
+    return options[index];
+  };
 
-function simulateModerateRisk() {
-  console.log('Simulating moderate risk profile...');
-  setFieldValue("Age", getRandomInRange(45, 60)); // Older
-  setFieldValue("BMI", getRandomInRange(28, 32, 1)); // Overweight to obese
-  setFieldValue("Blood Glucose", getRandomInRange(110, 130)); // Pre-diabetic range
-  setFieldValue("Blood Pressure", getRandomInRange(130, 145)); // High
-  setFieldValue("HbA1c", getRandomInRange(5.8, 6.3, 1)); // Pre-diabetic
-  setFieldValue("Insulin Level", getRandomInRange(70, 120)); // Elevated
-  setFieldValue("Skin thickness", getRandomInRange(30, 40)); // Thick
-  setFieldValue("Pregnancies", getRandomInRange(2, 5)); // Multiple pregnancies
-  setFieldValue("Family history", getRandomOption(["0", "1"])); // Maybe family history
-  setFieldValue("Physical Activity", getRandomOption(["Low", "Medium"])); // Less active
-  setFieldValue("Smoking status", getRandomOption(["Smoker", "Non-Smoker"])); // Maybe smoker
-  setFieldValue("Alcohol Intake", getRandomInRange(7, 12)); // Higher alcohol
-  setFieldValue("Diet_Type", "Non-Vegetarian"); // Less healthy diet
-  setFieldValue("Cholesterol", getRandomInRange(220, 250)); // High cholesterol
-  setFieldValue("Triglycerides", getRandomInRange(180, 230)); // High triglycerides
-  setFieldValue("Waist ratio", getRandomInRange(95, 110)); // Large waist
-}
+  // Define the ranges and options for each form field
+  const fieldData = {
+    'Age': () => getRandomInRange(18, 80),
+    'BMI': () => getRandomInRange(18.5, 40, 1),
+    'Blood Glucose': () => getRandomInRange(70, 200),
+    'Blood Pressure': () => getRandomInRange(80, 180),
+    'HbA1c': () => getRandomInRange(4.0, 12.0, 1),
+    'Insulin Level': () => getRandomInRange(2, 300),
+    'Skin thickness': () => getRandomInRange(7, 99),
+    'Pregnancies': () => getRandomInRange(0, 17),
+    'Family history': () => getRandomOption(['0', '1']),
+    'Physical Activity': () => getRandomOption(["Low", "Medium", "High"]),
+    'Smoking status': () => getRandomOption(["Smoker", "Non-Smoker"]),
+    'Alcohol Intake': () => getRandomInRange(0, 30),
+    'Diet_Type': () => getRandomOption(["Non-Vegetarian", "Vegetarian", "Vegan"]),
+    'Cholesterol': () => getRandomInRange(100, 400),
+    'Triglycerides': () => getRandomInRange(50, 500),
+    'Waist ratio': () => getRandomInRange(60, 150)
+  };
 
-function simulateHighRisk() {
-  console.log('Simulating high risk profile...');
-  setFieldValue("Age", getRandomInRange(60, 80)); // Elderly
-  setFieldValue("BMI", getRandomInRange(32, 45, 1)); // Obese
-  setFieldValue("Blood Glucose", getRandomInRange(140, 220)); // Diabetic range
-  setFieldValue("Blood Pressure", getRandomInRange(150, 180)); // Very high BP
-  setFieldValue("HbA1c", getRandomInRange(6.8, 10.0, 1)); // Diabetic range
-  setFieldValue("Insulin Level", getRandomInRange(120, 250)); // Very high insulin
-  setFieldValue("Skin thickness", getRandomInRange(40, 65)); // Very thick
-  setFieldValue("Pregnancies", getRandomInRange(3, 8)); // Many pregnancies
-  setFieldValue("Family history", "1"); // Family history present
-  setFieldValue("Physical Activity", "Low"); // Sedentary
-  setFieldValue("Smoking status", "Smoker"); // Smoker
-  setFieldValue("Alcohol Intake", getRandomInRange(12, 20)); // High alcohol
-  setFieldValue("Diet_Type", "Non-Vegetarian"); // Unhealthy diet
-  setFieldValue("Cholesterol", getRandomInRange(260, 320)); // Very high cholesterol
-  setFieldValue("Triglycerides", getRandomInRange(250, 400)); // Very high triglycerides
-  setFieldValue("Waist ratio", getRandomInRange(110, 135)); // Very large waist
+  // Loop through the fields and populate them
+  for (const [name, valueFn] of Object.entries(fieldData)) {
+    // This robust selector finds any form element with the matching 'name' attribute
+    const element = document.querySelector(`[name="${name}"]`);
+    if (element) {
+      element.value = valueFn();
+    } else {
+      console.warn(`Simulate fields: Element with name "${name}" not found.`);
+    }
+  }
+  scrollToPredict()
 }
 
 // --- Scroll helper ---

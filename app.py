@@ -63,19 +63,22 @@ def get_risk_result(probabilities):
     
     if risk_level == 'High':
         result = {
-            'message': f"{prob_percent:.1f}% High Risk",
+            'message': "High Risk",
+            # 'message': f"{prob_percent:.1f}% High Risk",
             'advice': 'Your results indicate a high risk. Please consult a healthcare professional immediately for diagnosis and guidance.',
             'class_name': 'high-risk'
         }
     elif risk_level == 'Moderate':
         result = {
-            'message': f"{prob_percent:.1f}% Moderate Risk",
+            'message': "Moderate Risk",
+            # 'message': f"{prob_percent:.1f}% Moderate Risk",
             'advice': 'You are at moderate risk. It is advisable to monitor your health and consult a doctor for preventative measures.',
             'class_name': 'moderate-risk'
         }
     else:  # Fair Risk
         result = {
-            'message': f"{prob_percent:.1f}% Fair Risk",
+            'message': "Fair Risk",
+            # 'message': f"{prob_percent:.1f}% Fair Risk",
             'advice': 'Your risk is fair, but there is room for improvement. Focus on a balanced diet and regular physical activity.',
             'class_name': 'fair-risk'
         }
